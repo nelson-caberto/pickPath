@@ -6,6 +6,10 @@ let r = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="cu
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>`;
 
+let initDIR = document.getElementById('ZZDIR');
+initDIR.setAttribute('dir',direction);
+initDIR.innerHTML = direction?l:r;
+
 let pickPath = [];
 
 function revDir(isle,binCol) {
@@ -96,7 +100,7 @@ function generateLayout() {
     document.getElementById('layout').innerHTML = '';
     let startIsle = parseInt(document.getElementById('startIsle').value);
     let endIsle = parseInt(document.getElementById('endIsle').value);
-    direction = document.getElementById('ZZDIR').getAttribute('dir') === 'true';
+    direction = initDIR.getAttribute('dir') === 'true';
     for (let i = startIsle; i < endIsle; i+=2) {
         addrow(i,direction,direction?l:r);
         direction = !direction;
@@ -163,6 +167,3 @@ const range = (start, end) => {
     return Array.from({ length }, (_, i) => start + i);
 }
 
-let initDIR = document.getElementById('ZZDIR');
-initDIR.setAttribute('dir',direction);
-initDIR.innerHTML = direction?l:r;
