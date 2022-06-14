@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row mb-3"></div>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Floor | Isle Start | Isle End</span>
+                    <input id="floor" type="text" value="P-2-M" aria-label="floor" class="form-control">
+                    <input id="startIsle" type="number" value="101" aria-label="startIsle" class="form-control">
+                    <input id="endIsle" type="number" value="102" aria-label="endIsle" class="form-control">
+                    <button class="btn btn-outline-secondary" type="button" id="genLayout" onclick="generateLayout();">Generate Layout</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="download();">Download CSV</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div id="isleOrder">
+                </div>
+            </div>
+            <div class="col-10">
+                <div id="layout" class="container">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+    <script src="app.js"></script>
+</body>
+</html>
