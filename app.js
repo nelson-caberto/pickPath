@@ -161,3 +161,7 @@ const range = (start, end) => {
     const length = end - start;
     return Array.from({ length }, (_, i) => start + i);
 }
+
+let initDIR = document.getElementById('ZZDIR');
+initDIR.setAttribute('dir',direction);
+initDIR.innerHTML = direction?l:r;
