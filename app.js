@@ -96,6 +96,7 @@ function generateLayout() {
     document.getElementById('layout').innerHTML = '';
     let startIsle = parseInt(document.getElementById('startIsle').value);
     let endIsle = parseInt(document.getElementById('endIsle').value);
+    direction = document.getElementById('ZZDIR').getAttribute('dir') === 'true';
     for (let i = startIsle; i < endIsle; i+=2) {
         addrow(i,direction,direction?l:r);
         direction = !direction;
