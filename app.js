@@ -107,7 +107,7 @@ function generateLayout() {
     document.getElementById('layout').innerHTML = '';
     const startIsle = parseInt(document.getElementById('startIsle').value);
     let endIsle = parseInt(document.getElementById('endIsle').value);
-    if (endIsle % 2 == 1) {
+    if (startIsle % 2 == endIsle % 2) {
         endIsle++;
         document.getElementById('endIsle').value = endIsle;
     }
