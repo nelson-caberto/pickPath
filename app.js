@@ -39,7 +39,7 @@ function updateLayoutOrder() {
     }
 }
 
-function addcol(isle,binCol,direction,directionHTML) {
+function addcol(isle,binCol,binCount,direction,directionHTML) {
     let col = 
     `
     <div class="col border">
@@ -48,7 +48,7 @@ function addcol(isle,binCol,direction,directionHTML) {
                 <div class="col">
                 </div>
                 <div class="col border-bottom" align="center">
-                    <span class="align-middle">${binCol}-${binCol+77}</span>
+                    <span class="align-middle">${binCol}-${binCol+binCount}</span>
                 </div>
             </div>
             <div class="row align-items-center">
@@ -80,15 +80,22 @@ function addcol(isle,binCol,direction,directionHTML) {
 }
 
 function addrow(isle,direction,directionHTML) {
+    const binStart = parseInt(document.getElementById('binStart').value);
+    const binOffset = parseInt(document.getElementById('binOffset').value);
+    const binSegment = parseInt(document.getElementById('binSegment').value);
+    const binCount = parseInt(document.getElementById('binCount').value);
+    const binMax = binStart + binOffset * binSegment;
     let layout = `<div class="row">`
-    layout += addcol(isle,100,direction,directionHTML);
-    layout += addcol(isle,200,direction,directionHTML);
-    layout += addcol(isle,300,direction,directionHTML);
+    for (let i = binStart; i < binMax; i+=binOffset) {
+        layout += addcol(isle,i,binCount,direction,directionHTML);
+    }
     document.getElementById('layout').innerHTML += layout;
 }
 
 function updateIsleOrder() {
-    let isleOrder = `<select class="form-select mb-3" multiple aria-label="isleOrder" size="${pickPath.length}">`;
+    let isleOrder = `
+    <h6>Pick Path</h6>
+        <select class="form-select mb-3" multiple aria-label="isleOrder" size="${pickPath.length}">`;
     for (subSec of pickPath) {
         isleOrder += `<option value="${subSec}">${subSec}</option>`;
     }
@@ -117,7 +124,8 @@ function download() {
         let binCol = parseInt(id.substr(3,3));
         let direction = document.getElementById(id+"DIR") === 'true';
         let floor = document.getElementById('floor').getAttribute('value');
-        results = results.concat(genSubSect(isle, binCol, direction, floor));
+        let binOffset = parseInt(document.getElementById('binCount').value);
+        results = results.concat(genSubSect(isle, binCol, binOffset, direction, floor));
     }
     let csvContent = "";
     results.forEach(result=>csvContent+=result+"\n");
@@ -128,10 +136,10 @@ function download() {
     a.click();
 }
 
-function genSubSect(isleStart, binColStart, direction, floor) {
+function genSubSect(isleStart, binColStart, binCount, direction, floor) {
     let binU = ['A','B','C','D','E'];
     let binD = ['E','D','C','B','A'];
-    let binColEnd = binColStart+78;
+    let binColEnd = binColStart+binCount;
     isleEnd = isleStart+1;
     binCols = range(binColStart,binColEnd);
     isles = [isleStart, isleEnd];

@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class="container">
-        <div class="row mb-3"></div>
+        <div class="row mb-3">
+            <a href="https://github.com/nelson-caberto/pickPath"><span>Return to Github</span></a>
+        </div>
         <div class="row mb-3">
             <div class="col">
                 <div class="input-group">
@@ -20,6 +22,32 @@
                     <button type="button" class="btn btn-secondary" onclick="revDir('Z','Z');"><div id="ZZDIR"></div></button>
                     <button class="btn btn-outline-secondary" type="button" onclick="generateLayout();">Generate Layout</button>
                     <button class="btn btn-outline-secondary" type="button" onclick="download();">Download CSV</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Bin Start</span>
+                    <input id="binStart" type="number" value="100" aria-label="binStart" class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Bin Offset</span>
+                    <input id="binOffset" type="number" value="100" aria-label="binOffset" class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Bin Segment</span>
+                    <input id="binSegment" type="number" value="3" aria-label="binSegment" class="form-control">
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Bin Count</span>
+                    <input id="binCount" type="number" value="77" aria-label="binCount" class="form-control">
                 </div>
             </div>
         </div>
