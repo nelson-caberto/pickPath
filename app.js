@@ -68,7 +68,7 @@ function addcol(isle,binCol,binCount,direction,directionHTML) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3" align="center">
-                        <button type="button" class="btn btn-secondary" onclick="revDir(${isle},${binCol});"><div id="${isle}${binCol}DIR" dir="${direction}">${directionHTML}</div></button>
+                        <button type="button" class="btn btn-secondary" onclick="revDir(${isle},${binCol});"><div id="${isle}${binCol}DIR" dir="${direction}" binOffset="${binOffset}">${directionHTML}</div></button>
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePath(${isle},${binCol})" id="${isle}${binCol}"> X </button>
                     </div>
                 </div>
@@ -105,8 +105,12 @@ function updateIsleOrder() {
 
 function generateLayout() {
     document.getElementById('layout').innerHTML = '';
-    let startIsle = parseInt(document.getElementById('startIsle').value);
+    const startIsle = parseInt(document.getElementById('startIsle').value);
     let endIsle = parseInt(document.getElementById('endIsle').value);
+    if (endIsle % 2 == 1) {
+        endIsle++;
+        document.getElementById('endIsle').value = endIsle;
+    }
     direction = initDIR.getAttribute('dir') === 'true';
     for (let i = startIsle; i < endIsle; i+=2) {
         addrow(i,direction,direction?l:r);
@@ -124,7 +128,7 @@ function download() {
         let binCol = parseInt(id.substr(3,3));
         let direction = document.getElementById(id+"DIR") === 'true';
         let floor = document.getElementById('floor').getAttribute('value');
-        let binOffset = parseInt(document.getElementById('binCount').value);
+        let binOffset = parseInt(document.getElementById(id+"DIR").getAttribute('binOffset'));
         results = results.concat(genSubSect(isle, binCol, binOffset, direction, floor));
     }
     let csvContent = "";
