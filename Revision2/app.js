@@ -24,6 +24,7 @@ let dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=
 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
 </svg>`;
 
+document.getElementById('ZZDIR').setAttribute('id',`${genIsleBinID('Z','Z')}DIR`);
 
 let isleStart  = document.getElementById('isleStart');
 let isleEnd    = document.getElementById('isleEnd');
@@ -322,7 +323,6 @@ function renderLayout(event) {
 }
 
 function genIsleBinID(isle,bin) {
-    // dont forget to modify ZZDIR in html if this changes
     return `${isle}-${bin}`;
 }
 
@@ -344,15 +344,28 @@ function togglePath(isle,bin) {
 
 function renderPickPath() {
     const floor = sectionLayout.getAttribute('floor');
-    const section = sectionLayout.getAttribute('sectionIndex');
-    let fsPickPath = data[floor][section].pickPath;
+    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+    const section = data[floor][sectionIndex];
+    const fsPickPath = section.pickPath;
+    const startI = section.isleStart;
+    const endI = section.isleEnd;
+    const startB = section.binStart;
+    const endB = section.binStart*section.binSegment;
     let isleOrder = `
-    <h6>Pick Path</h6>
-        <select class="form-select mb-3" multiple aria-label="isleOrder" size="${fsPickPath.length}">`;
+    <h6 align="center">Pick Path <em>${startI}-${endI},${startB}-${endB}</em></h6>
+        <select class="form-select" multiple aria-label="isleOrder" size="${fsPickPath.length}">`;
     for (subSec of fsPickPath) {
         isleOrder += `<option value="${subSec}">${subSec}</option>`;
     }
-    isleOrder += `</select>`;
+    isleOrder += `
+        </select>
+        <div class="btn-group" role="group" aria-label="$pickPathMoveButtons">
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${u}</button>
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${d}</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="$pickPathRemoveButton">
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">REMOVE</button>
+        </div>`;
     pickPath.innerHTML = isleOrder;
 }
 
