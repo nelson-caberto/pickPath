@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <title>PickPath</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row mb-3"></div>
+        <div class="row">
+            <div class="col-3">
+                <!-- Left Pannel Inputs -->
+                <div class="input-group mb-3">
+                    <label class="input-group-text" for="pickPathfile" style="width:98px;">Pick Path</label>
+                    <input type="file" class="form-control" id="pickPathfile" hidden>
+                    <button class="btn btn-outline-secondary" type="button" onclick="loadpaths();">Load</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="savepaths();">Save</button>
+                </div>
+                <div class="input-group">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="addFloorInput" placeholder="Floor" value="P-2-M"
+                            onkeyup="validateFloorInput(this);" aria-label="Floor" aria-describedby="addFloorButton"
+                            pattern="^[a-zA-Z][a-zA-Z0-9-]*$" style="width:161px;">
+                        <label for="addFloorInput">Floor</label>
+                    </div>
+                    <button class="btn btn-outline-secondary mb-3" type="button" id="addFloorButton"
+                        onclick="addFloor();">Add</button>
+                </div>
+                <div class="accordion mb-3" id="accordionPanel"></div>
+                <div class="input-group mb-3">
+                    <button id="downloadButton" class="btn btn-outline-secondary" type="button" onclick="alert('TODO: write me');">Download</button>
+                    <select id="downloadSelect" class="form-select" id="downloadCSV" aria-label="downloadCSV">
+                        <option value="f" selected>Floor</option>
+                        <option value="s">Section</option>
+                    </select>
+                </div>
+                <div id="pickPath"></div>
+            </div>
+            <div class="col">
+                <div id="sectionLayout" class="container"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="sectionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sectionModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <h5>Isle</h5>
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="isleStart" value="101" onchange="validateIsleStart(this);">
+                                    <label for="isleStart">Start</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="isleEnd" value="102" onchange="validateIsleEnd(this);">
+                                    <label for="isleEnd">End</label>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">First Direction</span>
+                                    <button type="button" class="btn btn-secondary" onclick="revDir('Z','Z');">
+                                        <div id="ZZDIR"></div>
+                                    </button>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label class="input-group-text" for="islePair">Pair</label>
+                                    <select class="form-select" id="islePair">
+                                        <option value="b" selected>Left and Right</option>
+                                        <option value="l">Left Only</option>
+                                        <option value="r">Right Only</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <h5>Bin</h5>
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="binStart" value="100" onchange="validateBinStart(this);">
+                                    <label for="binStart">Start</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="binOffset" value="100" onchange="validateBinOffset(this);">
+                                    <label for="binOffset">Offset</label>
+                                </div>
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="binSegment" value="3" onchange="validateBinSegment(this);">
+                                    <label for="binSegment">Segment</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="binCount" value="77" onchange="validateBinCount(this);">
+                                    <label for="binCount">Count</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addSection();">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+            crossorigin="anonymous"></script>
+        <script src="app.js"></script>
+</body>
+
+</html>

@@ -85,7 +85,7 @@ function addrow(isle,direction,directionHTML) {
     const binSegment = parseInt(document.getElementById('binSegment').value);
     const binCount = parseInt(document.getElementById('binCount').value);
     const binMax = binStart + binOffset * binSegment;
-    let layout = `<div class="row">`
+    let layout = `<div class="row">`;
     for (let i = binStart; i < binMax; i+=binOffset) {
         layout += addcol(isle,i,binCount,direction,directionHTML);
     }
@@ -106,10 +106,10 @@ function updateIsleOrder() {
 function generateLayout() {
     document.getElementById('layout').innerHTML = '';
     const startIsle = parseInt(document.getElementById('startIsle').value);
-    let endIsle = parseInt(document.getElementById('endIsle').value);
+    let endIsleE = document.getElementById('endIsle');
+    let endIsle = parseInt(endIsleE.value);
     if (startIsle % 2 == endIsle % 2) {
-        endIsle++;
-        document.getElementById('endIsle').value = endIsle;
+        endIsleE.value = ++endIsle;
     }
     direction = initDIR.getAttribute('dir') === 'true';
     for (let i = startIsle; i < endIsle; i+=2) {
@@ -123,12 +123,12 @@ function generateLayout() {
 function download() {
     let results = [];
     for (element in pickPath) {
-        let id = pickPath[element];
-        let isle = parseInt(id.substr(0,3));
-        let binCol = parseInt(id.substr(3,3));
-        let direction = document.getElementById(id+"DIR") === 'true';
-        let floor = document.getElementById('floor').getAttribute('value');
-        let binOffset = parseInt(document.getElementById(id+"DIR").getAttribute('binOffset'));
+        const id = pickPath[element];
+        const isle = parseInt(id.substr(0,3));
+        const binCol = parseInt(id.substr(3,3));
+        const direction = document.getElementById(id+"DIR") === 'true';
+        const floor = document.getElementById('floor').getAttribute('value');
+        const binOffset = parseInt(document.getElementById(id+"DIR").getAttribute('binOffset'));
         results = results.concat(genSubSect(isle, binCol, binOffset, direction, floor));
     }
     let csvContent = "";
