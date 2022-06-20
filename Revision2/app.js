@@ -31,6 +31,19 @@ initDIR.innerHTML = direction?l:r;
 disableDownload();
 
 let data = {};
+let validation = {
+    addFloorButton:{
+        floorInput:false
+    },
+    sectionAddButton:{
+        isleStart:false,
+        isleEnd:false,
+        binStart:false,
+        binOffset:false,
+        binSegment:false,
+        binCount:false
+    }
+};
 
 function loadpaths() {
     document.getElementById('pickPathfile').click();
@@ -181,35 +194,41 @@ function appendFloorView(floor) {
     document.getElementById('accordionPanel').innerHTML += renderFloorItem(floor);
 }
 
-function validate(event, condition, button) {
+function validate(event, condition, buttonID, validator) {
+    let button = document.getElementById(buttonID);
     if (condition) {
-        button.disabled = false;
+        validation[buttonID][validator] = false;
         event.classList.remove('is-invalid');
+        if (Object.values(validation['sectionAddButton']).filter(r=>r).length==0) {
+            button.disabled = false;
+        }
     } else {
-        button.disabled = true;
+        validation[buttonID][validator] = true;
         event.classList.add('is-invalid');
-    }    
+        button.disabled = true;
+    }
 }
 
 function validateFloorInput(event) {
-    let floorButton = document.getElementById('addFloorButton');
-    validate(event,event.validity.valid,floorButton);
+    validate(event,event.validity.valid,'addFloorButton','floorInput');
 }
 
 function validateIsleStart(event) {
     // must be a positive non zero number
-    let addButton = document.getElementById('sectionAddButton');
-    validate(event,event.value > 0,addButton);
+    validate(event,event.value > 0,'sectionAddButton','isleStart');
 }
 
 function validateIsleEnd(event) {
     // cannot be less than isleStart
-    let addButton = document.getElementById('sectionAddButton');
     const isleStart = parseInt(document.getElementById('isleStart').value);
-    validate(event,event.value > isleStart,addButton);
+    validate(event,event.value > isleStart,'sectionAddButton','isleEnd');
 }
 
-function validateBinStart(event) {}
+function validateBinStart(event) {
+    // must be a positive non zero number
+    validate(event,event.value > 0,'sectionAddButton','binStart');
+}
+
 function validateBinOffset(event) {}
 function validateBinSegment(event) {}
 function validateBinCount(event) {}
