@@ -132,7 +132,7 @@ function addSection() {
     const isleStartV = parseInt(isleStart.value);
     const isleEndV = parseInt(isleEnd.value);
     const isleDirV = isleDir.getAttribute('dir') === 'true';
-    const islePair = document.getElementById('islePair').value;
+    const islePairV = parseInt(document.getElementById('islePair').value);
     const binStartV = parseInt(binStart.value);
     const binOffsetV = parseInt(binOffset.value);
     const binSegmentV = parseInt(binSegment.value);
@@ -142,7 +142,7 @@ function addSection() {
         isleStart:isleStartV,
         isleEnd:isleStartV%2==isleEndV%2?isleEndV+1:isleEndV,
         isleDirection:isleDirV,
-        islePair:islePair,
+        islePair:islePairV,
         binStart:binStartV,
         binOffset:binOffsetV,
         binSegment:binSegmentV,
@@ -239,7 +239,7 @@ function validateSectionAdd() {
     validate(binCount,  parseInt(binOffset.value) > parseInt(binCount.value),   'sectionAddButton','binCount');
 }
 
-function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
+function renderLayoutCol(isle,bin,binCount,direction,directionHTML,step) {
     const id = genIsleBinID(isle,bin);
     let col = 
     `
@@ -259,13 +259,17 @@ function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
                             <div class="col border rounded" align="center">
                                 <span class="align-middle">${isle}</span>
                             </div>
-                        </div>
-                        <div class="row mb-2">
+                        </div>`
+
+    if (step==2) {
+        col +=         `<div class="row mb-2">
                             <div class="col border rounded" align="center">
                                 <span class="align-middle">${isle+1}</span>
                             </div>
-                        </div>
-                    </div>
+                        </div>`
+    }
+
+    col +=         `</div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3" align="center">
@@ -280,7 +284,7 @@ function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
     return col;
 }
 
-function renderLayoutRow(isle,direction,directionHTML,layout) {
+function renderLayoutRow(isle,direction,directionHTML,layout,step) {
     const binStart = layout.binStart;
     const binOffset = layout.binOffset;
     const binSegment = layout.binSegment;
@@ -288,7 +292,7 @@ function renderLayoutRow(isle,direction,directionHTML,layout) {
     const binMax = binStart + binOffset * binSegment;
     let secLayout = `<div class="row">`
     for (let i = binStart; i < binMax; i+=binOffset) {
-        secLayout += renderLayoutCol(isle,i,binCount,direction,directionHTML);
+        secLayout += renderLayoutCol(isle,i,binCount,direction,directionHTML,step);
     }
     sectionLayout.innerHTML += secLayout;
 }
@@ -302,12 +306,13 @@ function renderLayout(event) {
     if (section == -1) return;
     const floor = event.options[section].getAttribute('floor');
     const layout = data[floor][section];
-    const isleStart = layout.isleStart;
-    const isleEnd = layout.isleEnd;
+    const start = layout.isleStart;
+    const end = layout.isleEnd;
+    const step = layout.islePair;
     let direction = layout.direction;
     sectionLayout.innerHTML = '';
-    for (let i = isleStart; i < isleEnd; i+=2) {
-        renderLayoutRow(i,direction,direction?l:r,layout);
+    for (let i = start; i < end; i+=step) {
+        renderLayoutRow(i,direction,direction?l:r,layout,step);
         direction = !direction;
     }
     sectionLayout.setAttribute('floor',floor);
