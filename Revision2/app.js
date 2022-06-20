@@ -30,6 +30,13 @@ initDIR.innerHTML = direction?l:r;
 
 disableDownload();
 
+let isleStart  = document.getElementById('isleStart');
+let isleEnd    = document.getElementById('isleEnd');
+let binStart   = document.getElementById('binStart');
+let binOffset  = document.getElementById('binOffset');
+let binCount   = document.getElementById('binCount');
+let binSegment = document.getElementById('binSegment');
+
 let data = {};
 let validation = {
     addFloorButton:{
@@ -112,24 +119,24 @@ function renderFloorItem(floor) {
 
 function addSection() {
     const floor = document.getElementById('emfloor').innerText;
-    const isleStart = parseInt(document.getElementById('isleStart').value);
-    const isleEnd = parseInt(document.getElementById('isleEnd').value);
+    const isleStartV = parseInt(isleStart.value);
+    const isleEndV = parseInt(isleEnd.value);
     const isleDirection = document.getElementById('ZZDIR').getAttribute('dir') === 'true';
     const islePair = document.getElementById('islePair').value;
-    const binStart = parseInt(document.getElementById('binStart').value);
-    const binOffset = parseInt(document.getElementById('binOffset').value);
-    const binSegment = parseInt(document.getElementById('binSegment').value);
-    const binCount = parseInt(document.getElementById('binCount').value);
+    const binStartV = parseInt(binStart.value);
+    const binOffsetV = parseInt(binOffset.value);
+    const binSegmentV = parseInt(binSegment.value);
+    const binCountV = parseInt(binCount.value);
 
     data[floor].push({
-        isleStart:isleStart,
-        isleEnd:isleStart%2==isleEnd%2?isleEnd+1:isleEnd,
+        isleStart:isleStartV,
+        isleEnd:isleStartV%2==isleEndV%2?isleEndV+1:isleEndV,
         isleDirection:isleDirection,
         islePair:islePair,
-        binStart:binStart,
-        binOffset:binOffset,
-        binSegment:binSegment,
-        binCount:binCount,
+        binStart:binStartV,
+        binOffset:binOffsetV,
+        binSegment:binSegmentV,
+        binCount:binCountV,
         pickPath:[],
         mods:{
             direction:{}
@@ -214,19 +221,12 @@ function validateFloorInput(event) {
 }
 
 function validateSectionAdd() {
-    let isleStart = document.getElementById('isleStart');
-    let isleEnd = document.getElementById('isleEnd');
-    let binStart = document.getElementById('binStart');
-    let binOffset = document.getElementById('binOffset');
-    let binCount = document.getElementById('binCount');
-    let binSegment = document.getElementById('binSegment');
-
-    validate(isleStart,isleStart.value > 0,'sectionAddButton','isleStart');    
-    validate(isleEnd,parseInt(isleEnd.value) > parseInt(isleStart.value),'sectionAddButton','isleEnd');
-    validate(binStart,parseInt(binStart.value) > 0,'sectionAddButton','binStart');
-    validate(binOffset,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binOffset');
-    validate(binSegment,parseInt(binSegment.value) > 0,'sectionAddButton','binSegment');    
-    validate(binCount,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binCount');
+    validate(isleStart, isleStart.value > 0,                                    'sectionAddButton','isleStart');    
+    validate(isleEnd,   parseInt(isleEnd.value) > parseInt(isleStart.value),    'sectionAddButton','isleEnd');
+    validate(binStart,  parseInt(binStart.value) > 0,                           'sectionAddButton','binStart');
+    validate(binOffset, parseInt(binOffset.value) > parseInt(binCount.value),   'sectionAddButton','binOffset');
+    validate(binSegment,parseInt(binSegment.value) > 0,                         'sectionAddButton','binSegment');    
+    validate(binCount,  parseInt(binOffset.value) > parseInt(binCount.value),   'sectionAddButton','binCount');
 }
 
 function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
