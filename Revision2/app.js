@@ -214,32 +214,20 @@ function validateFloorInput(event) {
 }
 
 function validateSectionAdd() {
-    // isleStart: must be a positive non zero number
     let isleStart = document.getElementById('isleStart');
-    validate(isleStart,isleStart.value > 0,'sectionAddButton','isleStart');    
-
-    // isleEnd: cannot be less than isleStart
     let isleEnd = document.getElementById('isleEnd');
-    validate(isleEnd,parseInt(isleEnd.value) > parseInt(isleStart.value),'sectionAddButton','isleEnd');
-
-    // binStart: must be a positive non zero number
     let binStart = document.getElementById('binStart');
-    validate(binStart,parseInt(binStart.value) > 0,'sectionAddButton','binStart');
-    
-    // binOffset: must be greater than binCount
     let binOffset = document.getElementById('binOffset');
     let binCount = document.getElementById('binCount');
-    validate(binOffset,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binOffset');
-
-    // binSegment: must be greater than zero
     let binSegment = document.getElementById('binSegment');
+
+    validate(isleStart,isleStart.value > 0,'sectionAddButton','isleStart');    
+    validate(isleEnd,parseInt(isleEnd.value) > parseInt(isleStart.value),'sectionAddButton','isleEnd');
+    validate(binStart,parseInt(binStart.value) > 0,'sectionAddButton','binStart');
+    validate(binOffset,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binOffset');
     validate(binSegment,parseInt(binSegment.value) > 0,'sectionAddButton','binSegment');    
-
+    validate(binCount,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binCount');
 }
-
-function validateBinOffset(event) {}
-function validateBinSegment(event) {}
-function validateBinCount(event) {}
 
 function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
     const id = genIsleBinID(isle,bin);
