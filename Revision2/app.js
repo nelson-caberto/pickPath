@@ -110,7 +110,7 @@ function addSection() {
 
     data[floor].push({
         isleStart:isleStart,
-        isleEnd:isleEnd,
+        isleEnd:isleStart%2==isleEnd%2?isleEnd+1:isleEnd,
         isleDirection:isleDirection,
         islePair:islePair,
         binStart:binStart,
@@ -193,7 +193,7 @@ function validateFloorInput(value) {
 }
 
 function validateIsleStart() {}
-function validateIsleEnd() {}
+function validateIsleEnd(event) {}
 function validateBinStart() {}
 function validateBinOffset() {}
 function validateBinSegment() {}
