@@ -181,41 +181,34 @@ function appendFloorView(floor) {
     document.getElementById('accordionPanel').innerHTML += renderFloorItem(floor);
 }
 
-function validateFloorInput(value) {
-    let floorButton = document.getElementById('addFloorButton');
-    if (value.validity.valid) {
-        floorButton.disabled = false;
-        value.classList.remove('is-invalid');
+function validate(event, condition, button) {
+    if (condition) {
+        button.disabled = false;
+        event.classList.remove('is-invalid');
     } else {
-        floorButton.disabled = true;
-        value.classList.add('is-invalid');
-    }
+        button.disabled = true;
+        event.classList.add('is-invalid');
+    }    
+}
+
+function validateFloorInput(event) {
+    let floorButton = document.getElementById('addFloorButton');
+    validate(event,event.validity.valid,floorButton);
 }
 
 function validateIsleStart(event) {
     // must be a positive non zero number
     let addButton = document.getElementById('sectionAddButton');
-    if (event.value > 0) {
-        addButton.disabled = false;
-        event.classList.remove('is-invalid');
-    } else {
-        addButton.disabled = true;
-        event.classList.add('is-invalid');
-    }
+    validate(event,event.value > 0,addButton);
 }
 
 function validateIsleEnd(event) {
     // cannot be less than isleStart
     let addButton = document.getElementById('sectionAddButton');
     const isleStart = parseInt(document.getElementById('isleStart').value);
-    if (event.value > isleStart) {
-        addButton.disabled = false;
-        event.classList.remove('is-invalid');
-    } else {
-        addButton.disabled = true;
-        event.classList.add('is-invalid');
-    }
+    validate(event,event.value > isleStart,addButton);
 }
+
 function validateBinStart(event) {}
 function validateBinOffset(event) {}
 function validateBinSegment(event) {}
