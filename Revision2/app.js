@@ -192,12 +192,22 @@ function validateFloorInput(value) {
     }
 }
 
-function validateIsleStart() {}
+function validateIsleStart(event) {
+    // must be a positive non zero number
+    let addButton = document.getElementById('sectionAddButton');
+    if (event.value > 0) {
+        addButton.disabled = false;
+        event.classList.remove('is-invalid');
+    } else {
+        addButton.disabled = true;
+        event.classList.add('is-invalid');
+    }
+}
 function validateIsleEnd(event) {}
-function validateBinStart() {}
-function validateBinOffset() {}
-function validateBinSegment() {}
-function validateBinCount() {}
+function validateBinStart(event) {}
+function validateBinOffset(event) {}
+function validateBinSegment(event) {}
+function validateBinCount(event) {}
 
 function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
     const id = genIsleBinID(isle,bin);
