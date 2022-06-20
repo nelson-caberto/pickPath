@@ -57,15 +57,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="container">
-                        <div class="row">
+                        <div class="row" onchange="validateSectionAdd();">
                             <div class="col">
                                 <h5>Isle</h5>
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="isleStart" value="101" onchange="validateIsleStart(this);">
+                                    <input type="number" class="form-control" id="isleStart" value="101">
                                     <label for="isleStart">Start</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="isleEnd" value="117" onchange="validateIsleEnd(this);">
+                                    <input type="number" class="form-control" id="isleEnd" value="117">
                                     <label for="isleEnd">End</label>
                                 </div>
                                 <div class="input-group mb-3">
@@ -86,19 +86,19 @@
                             <div class="col">
                                 <h5>Bin</h5>
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="binStart" value="100" onchange="validateBinStart(this);">
+                                    <input type="number" class="form-control" id="binStart" value="100">
                                     <label for="binStart">Start</label>
                                 </div>
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="binOffset" value="100" onchange="validateBinOffset(this);">
+                                    <input type="number" class="form-control" id="binOffset" value="100">
                                     <label for="binOffset">Offset</label>
                                 </div>
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="binSegment" value="3" onchange="validateBinSegment(this);">
+                                    <input type="number" class="form-control" id="binSegment" value="3">
                                     <label for="binSegment">Segment</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="number" class="form-control" id="binCount" value="77" onchange="validateBinCount(this);">
+                                    <input type="number" class="form-control" id="binCount" value="77">
                                     <label for="binCount">Count</label>
                                 </div>
                             </div>

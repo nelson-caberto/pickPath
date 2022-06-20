@@ -213,20 +213,19 @@ function validateFloorInput(event) {
     validate(event,event.validity.valid,'addFloorButton','floorInput');
 }
 
-function validateIsleStart(event) {
-    // must be a positive non zero number
-    validate(event,event.value > 0,'sectionAddButton','isleStart');
-}
+function validateSectionAdd() {
+    // isleStart: must be a positive non zero number
+    let isleStart = document.getElementById('isleStart');
+    validate(isleStart,isleStart.value > 0,'sectionAddButton','isleStart');    
 
-function validateIsleEnd(event) {
-    // cannot be less than isleStart
-    const isleStart = parseInt(document.getElementById('isleStart').value);
-    validate(event,event.value > isleStart,'sectionAddButton','isleEnd');
-}
+    // isleEnd: cannot be less than isleStart
+    let isleEnd = document.getElementById('isleEnd');
+    validate(isleEnd,isleEnd.value > isleStart.value,'sectionAddButton','isleEnd');
 
-function validateBinStart(event) {
     // must be a positive non zero number
-    validate(event,event.value > 0,'sectionAddButton','binStart');
+    let binStart = document.getElementById('binStart');
+    validate(binStart,binStart.value > 0,'sectionAddButton','binStart');
+    
 }
 
 function validateBinOffset(event) {}
