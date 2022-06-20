@@ -50,8 +50,9 @@ function disableDownload() {
     document.getElementById('downloadSelect').disabled = true;
 }
 
-function revDir(isle,binCol) {
-    let arrow = document.getElementById(`${isle}${binCol}DIR`);
+function revDir(isle,bin) {
+    const id = genIsleBinID(isle,bin);
+    let arrow = document.getElementById(`${id}DIR`);
     let newdir = arrow.getAttribute("dir") !== 'true';
     arrow.innerHTML = newdir?l:r;
     arrow.setAttribute("dir",newdir);
@@ -82,15 +83,14 @@ function renderFloorItem(floor) {
         </h2>
         <div id="${floor}AccordianCollapse" class="accordion-collapse collapse" aria-labelledby="${floor}AccordianHeading" data-bs-parent="#accordionPanel">
             <div class="accordion-body">
-                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onclick="renderLayout(this);">
-                </select>
+                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onclick="renderLayout(this);"></select>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sectionModal" floor="${floor}">${plus}</button>
                     <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${dash}</button>
                 </div>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
-                    <button type="button" class="btn btn-secondary">${u}</button>
-                    <button type="button" class="btn btn-secondary">${d}</button>
+                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${u}</button>
+                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${d}</button>
                 </div>
             </div>
         </div>
@@ -139,6 +139,9 @@ function renderSection(floor) {
 }
 
 function removeSection(floor) {
+    const layout = document.getElementById('sectionLayout');
+    const layoutFloor = layout.getAttribute('floor');
+    const layoutSection = layout.getAttribute('sectionIndex');
     let sectionE = document.getElementById(`${floor}SectionBody`);
     if (sectionE.options.length == 0) return removeFloor(floor);
     if (sectionE.selectedOptions.length == 0) return;
@@ -147,11 +150,20 @@ function removeSection(floor) {
         removes.push(parseInt(selection.getAttribute('sectionIndex')));
     }
     removes.reverse();
-    for (selection of removes) {
-        data[floor].splice(selection,1);
+    if (floor === layoutFloor) {
+        for (selection of removes) {
+            data[floor].splice(selection,1);
+            if (selection == layoutSection) {
+                clearLayout();
+                clearPickPath();
+            }
+        }
+    } else {
+        for (selection of removes) {
+            data[floor].splice(selection,1);
+        }    
     }
     renderSection(floor);
-    // TODO: Need to account for if layout is currently displaying the section, if so clear layout
 }
 
 function renderFloor() {
@@ -162,6 +174,7 @@ function renderFloor() {
         renderSection(floor);
     }
     clearLayout();
+    clearPickPath();
 }
 
 function appendFloorView(floor) {
@@ -186,7 +199,8 @@ function validateBinOffset() {}
 function validateBinSegment() {}
 function validateBinCount() {}
 
-function renderLayoutCol(isle,binCol,binCount,direction,directionHTML) {
+function renderLayoutCol(isle,bin,binCount,direction,directionHTML) {
+    const id = genIsleBinID(isle,bin);
     let col = 
     `
     <div class="col border">
@@ -195,18 +209,18 @@ function renderLayoutCol(isle,binCol,binCount,direction,directionHTML) {
                 <div class="col">
                 </div>
                 <div class="col border-bottom" align="center">
-                    <span class="align-middle">${binCol}-${binCol+binCount}</span>
+                    <span class="align-middle">${bin}-${bin+binCount}</span>
                 </div>
             </div>
             <div class="row align-items-center">
-                <div class="col">
+                <div class="col-5">
                     <div class="container">
                         <div class="row">
                             <div class="col border rounded" align="center">
                                 <span class="align-middle">${isle}</span>
                             </div>
                         </div>
-                        <div class="row mb-3">
+                        <div class="row mb-2">
                             <div class="col border rounded" align="center">
                                 <span class="align-middle">${isle+1}</span>
                             </div>
@@ -215,8 +229,8 @@ function renderLayoutCol(isle,binCol,binCount,direction,directionHTML) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3" align="center">
-                        <button type="button" class="btn btn-secondary" onclick="revDir(${isle},${binCol});"><div id="${isle}${binCol}DIR" dir="${direction}" binOffset="${binOffset}">${directionHTML}</div></button>
-                        <button class="btn btn-outline-secondary" type="button" onclick="togglePath(${isle},${binCol});" id="${isle}${binCol}"> X </button>
+                        <button type="button" class="btn btn-secondary" onclick="revDir(${isle},${bin});"><div id="${id}DIR" dir="${direction}" binOffset="${binOffset}">${directionHTML}</div></button>
+                        <button class="btn btn-outline-secondary" type="button" onclick="togglePath(${isle},${bin});" id="${id}"> X </button>
                     </div>
                 </div>
             </div>
@@ -263,12 +277,16 @@ function renderLayout(event) {
     renderLayoutPickPath();
 }
 
+function genIsleBinID(isle,bin) {
+    return `${isle}-${bin}`;
+}
+
 function togglePath(isle,bin) {
     const layout = document.getElementById('sectionLayout');
     const floor = layout.getAttribute('floor');
     const section = layout.getAttribute('sectionIndex');
     let pickPath = data[floor][section].pickPath;
-    let id = `${isle}${bin}`;
+    let id = genIsleBinID(isle,bin);
     if (pickPath.includes(id)) {
         pickPath.splice(pickPath.indexOf(id),1);
         document.getElementById(id).innerText = " X ";
@@ -293,6 +311,10 @@ function renderPickPath() {
     }
     isleOrder += `</select>`;
     document.getElementById('pickPath').innerHTML = isleOrder;
+}
+
+function clearPickPath() {
+    document.getElementById('pickPath').innerHTML = '';
 }
 
 function renderLayoutPickPath() {
