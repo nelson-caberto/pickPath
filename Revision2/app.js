@@ -28,14 +28,23 @@ let initDIR = document.getElementById('ZZDIR');
 initDIR.setAttribute('dir',direction);
 initDIR.innerHTML = direction?l:r;
 
-disableDownload();
-
 let isleStart  = document.getElementById('isleStart');
 let isleEnd    = document.getElementById('isleEnd');
+let isleDir    = document.getElementById('ZZDIR');
+let islePair   = document.getElementById('islePair');
 let binStart   = document.getElementById('binStart');
 let binOffset  = document.getElementById('binOffset');
 let binCount   = document.getElementById('binCount');
 let binSegment = document.getElementById('binSegment');
+
+let downloadButton = document.getElementById('downloadButton');
+let downloadSelect = document.getElementById('downloadSelect');
+let accordionPanel = document.getElementById('accordionPanel');
+
+let sectionLayout = document.getElementById('sectionLayout');
+let pickPath = document.getElementById('pickPath');
+
+disableDownload();
 
 let data = {};
 let validation = {
@@ -61,13 +70,13 @@ function savepaths() {
 }
 
 function enableDownload() {
-    document.getElementById('downloadButton').disabled = false;
-    document.getElementById('downloadSelect').disabled = false;
+    downloadButton.disabled = false;
+    downloadSelect.disabled = false;
 }
 
 function disableDownload() {
-    document.getElementById('downloadButton').disabled = true;
-    document.getElementById('downloadSelect').disabled = true;
+    downloadButton.disabled = true;
+    downloadSelect.disabled = true;
 }
 
 function revDir(isle,bin) {
@@ -84,13 +93,13 @@ function addFloor() {
     if (floorName === '' || floorName in data) return;
     data[floorName] = [];
     appendFloorView(floorName);
-    if (document.getElementById('accordionPanel').childElementCount > 0) enableDownload();
+    if (accordionPanel.childElementCount > 0) enableDownload();
 }
 
 function removeFloor(floor) {
     delete data[floor];
     renderFloor();
-    if (document.getElementById('accordionPanel').childElementCount == 0) disableDownload();
+    if (accordionPanel.childElementCount == 0) disableDownload();
 }
 
 function renderFloorItem(floor) {
@@ -187,10 +196,9 @@ function removeSection(floor) {
 }
 
 function renderFloor() {
-    let sectionLayout = document.getElementById('accordionPanel');
-    sectionLayout.innerHTML = '';
+    accordionPanel.innerHTML = '';
     for (floor in data) {
-        sectionLayout.innerHTML += renderFloorItem(floor);
+        accordionPanel.innerHTML += renderFloorItem(floor);
         renderSection(floor);
     }
     clearLayout();
@@ -198,7 +206,7 @@ function renderFloor() {
 }
 
 function appendFloorView(floor) {
-    document.getElementById('accordionPanel').innerHTML += renderFloorItem(floor);
+    accordionPanel.innerHTML += renderFloorItem(floor);
 }
 
 function validate(event, condition, buttonID, validator) {
@@ -280,11 +288,11 @@ function renderLayoutRow(isle,direction,directionHTML,layout) {
     for (let i = binStart; i < binMax; i+=binOffset) {
         secLayout += renderLayoutCol(isle,i,binCount,direction,directionHTML);
     }
-    document.getElementById('sectionLayout').innerHTML += secLayout;
+    sectionLayout.innerHTML += secLayout;
 }
 
 function clearLayout() {
-    document.getElementById('sectionLayout').innerHTML = '';
+    sectionLayout.innerHTML = '';
 }
 
 function renderLayout(event) {
@@ -295,7 +303,6 @@ function renderLayout(event) {
     const isleStart = layout.isleStart;
     const isleEnd = layout.isleEnd;
     let direction = layout.direction;
-    let sectionLayout = document.getElementById('sectionLayout');
     sectionLayout.innerHTML = '';
     for (let i = isleStart; i < isleEnd; i+=2) {
         renderLayoutRow(i,direction,direction?l:r,layout);
@@ -312,48 +319,45 @@ function genIsleBinID(isle,bin) {
 }
 
 function togglePath(isle,bin) {
-    const layout = document.getElementById('sectionLayout');
-    const floor = layout.getAttribute('floor');
-    const section = layout.getAttribute('sectionIndex');
-    let pickPath = data[floor][section].pickPath;
+    const floor = sectionLayout.getAttribute('floor');
+    const section = sectionLayout.getAttribute('sectionIndex');
+    let fsPickPath = data[floor][section].pickPath;
     let id = genIsleBinID(isle,bin);
-    if (pickPath.includes(id)) {
-        pickPath.splice(pickPath.indexOf(id),1);
+    if (fsPickPath.includes(id)) {
+        fsPickPath.splice(fsPickPath.indexOf(id),1);
         document.getElementById(id).innerText = " X ";
     } else {
-        pickPath.push(id);
-        document.getElementById(id).innerText = pickPath.length;
+        fsPickPath.push(id);
+        document.getElementById(id).innerText = fsPickPath.length;
     }
     renderPickPath();
     renderLayoutPickPath();
 }
 
 function renderPickPath() {
-    const layout = document.getElementById('sectionLayout');
-    const floor = layout.getAttribute('floor');
-    const section = layout.getAttribute('sectionIndex');
-    let pickPath = data[floor][section].pickPath;
+    const floor = sectionLayout.getAttribute('floor');
+    const section = sectionLayout.getAttribute('sectionIndex');
+    let fsPickPath = data[floor][section].pickPath;
     let isleOrder = `
     <h6>Pick Path</h6>
-        <select class="form-select mb-3" multiple aria-label="isleOrder" size="${pickPath.length}">`;
-    for (subSec of pickPath) {
+        <select class="form-select mb-3" multiple aria-label="isleOrder" size="${fsPickPath.length}">`;
+    for (subSec of fsPickPath) {
         isleOrder += `<option value="${subSec}">${subSec}</option>`;
     }
     isleOrder += `</select>`;
-    document.getElementById('pickPath').innerHTML = isleOrder;
+    pickPath.innerHTML = isleOrder;
 }
 
 function clearPickPath() {
-    document.getElementById('pickPath').innerHTML = '';
+    pickPath.innerHTML = '';
 }
 
 function renderLayoutPickPath() {
-    const layout = document.getElementById('sectionLayout');
-    const floor = layout.getAttribute('floor');
-    const section = layout.getAttribute('sectionIndex');
-    let pickPath = data[floor][section].pickPath;
-    for (element in pickPath) {
-        let id = pickPath[element];
+    const floor = sectionLayout.getAttribute('floor');
+    const section = sectionLayout.getAttribute('sectionIndex');
+    let fsPickPath = data[floor][section].pickPath;
+    for (element in fsPickPath) {
+        let id = fsPickPath[element];
         document.getElementById(id).innerText = parseInt(element) + 1;
     }
 }
