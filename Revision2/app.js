@@ -203,7 +203,19 @@ function validateIsleStart(event) {
         event.classList.add('is-invalid');
     }
 }
-function validateIsleEnd(event) {}
+
+function validateIsleEnd(event) {
+    // cannot be less than isleStart
+    let addButton = document.getElementById('sectionAddButton');
+    const isleStart = parseInt(document.getElementById('isleStart').value);
+    if (event.value > isleStart) {
+        addButton.disabled = false;
+        event.classList.remove('is-invalid');
+    } else {
+        addButton.disabled = true;
+        event.classList.add('is-invalid');
+    }
+}
 function validateBinStart(event) {}
 function validateBinOffset(event) {}
 function validateBinSegment(event) {}
