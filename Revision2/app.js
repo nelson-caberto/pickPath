@@ -220,17 +220,21 @@ function validateSectionAdd() {
 
     // isleEnd: cannot be less than isleStart
     let isleEnd = document.getElementById('isleEnd');
-    validate(isleEnd,isleEnd.value > isleStart.value,'sectionAddButton','isleEnd');
+    validate(isleEnd,parseInt(isleEnd.value) > parseInt(isleStart.value),'sectionAddButton','isleEnd');
 
     // binStart: must be a positive non zero number
     let binStart = document.getElementById('binStart');
-    validate(binStart,binStart.value > 0,'sectionAddButton','binStart');
+    validate(binStart,parseInt(binStart.value) > 0,'sectionAddButton','binStart');
     
     // binOffset: must be greater than binCount
     let binOffset = document.getElementById('binOffset');
     let binCount = document.getElementById('binCount');
-    validate(binOffset,binOffset.value > binCount.value,'sectionAddButton','binOffset');
-    
+    validate(binOffset,parseInt(binOffset.value) > parseInt(binCount.value),'sectionAddButton','binOffset');
+
+    // binSegment: must be greater than zero
+    let binSegment = document.getElementById('binSegment');
+    validate(binSegment,parseInt(binSegment.value) > 0,'sectionAddButton','binSegment');    
+
 }
 
 function validateBinOffset(event) {}
