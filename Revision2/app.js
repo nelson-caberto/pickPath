@@ -222,9 +222,14 @@ function validateSectionAdd() {
     let isleEnd = document.getElementById('isleEnd');
     validate(isleEnd,isleEnd.value > isleStart.value,'sectionAddButton','isleEnd');
 
-    // must be a positive non zero number
+    // binStart: must be a positive non zero number
     let binStart = document.getElementById('binStart');
     validate(binStart,binStart.value > 0,'sectionAddButton','binStart');
+    
+    // binOffset: must be greater than binCount
+    let binOffset = document.getElementById('binOffset');
+    let binCount = document.getElementById('binCount');
+    validate(binOffset,binOffset.value > binCount.value,'sectionAddButton','binOffset');
     
 }
 
