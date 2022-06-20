@@ -24,13 +24,10 @@ let dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=
 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
 </svg>`;
 
-let initDIR = document.getElementById('ZZDIR');
-initDIR.setAttribute('dir',direction);
-initDIR.innerHTML = direction?l:r;
 
 let isleStart  = document.getElementById('isleStart');
 let isleEnd    = document.getElementById('isleEnd');
-let isleDir    = document.getElementById('ZZDIR');
+let isleDir    = document.getElementById(`${genIsleBinID('Z','Z')}DIR`);
 let islePair   = document.getElementById('islePair');
 let binStart   = document.getElementById('binStart');
 let binOffset  = document.getElementById('binOffset');
@@ -43,6 +40,10 @@ let accordionPanel = document.getElementById('accordionPanel');
 
 let sectionLayout = document.getElementById('sectionLayout');
 let pickPath = document.getElementById('pickPath');
+
+isleDir.setAttribute('dir',direction);
+isleDir.innerHTML = direction?l:r;
+
 
 disableDownload();
 
@@ -130,7 +131,7 @@ function addSection() {
     const floor = document.getElementById('emfloor').innerText;
     const isleStartV = parseInt(isleStart.value);
     const isleEndV = parseInt(isleEnd.value);
-    const isleDirection = document.getElementById('ZZDIR').getAttribute('dir') === 'true';
+    const isleDirV = isleDir.getAttribute('dir') === 'true';
     const islePair = document.getElementById('islePair').value;
     const binStartV = parseInt(binStart.value);
     const binOffsetV = parseInt(binOffset.value);
@@ -140,7 +141,7 @@ function addSection() {
     data[floor].push({
         isleStart:isleStartV,
         isleEnd:isleStartV%2==isleEndV%2?isleEndV+1:isleEndV,
-        isleDirection:isleDirection,
+        isleDirection:isleDirV,
         islePair:islePair,
         binStart:binStartV,
         binOffset:binOffsetV,
@@ -148,7 +149,8 @@ function addSection() {
         binCount:binCountV,
         pickPath:[],
         mods:{
-            direction:{}
+            direction:{},
+            exclude:{},
         }
     });
 
@@ -315,6 +317,7 @@ function renderLayout(event) {
 }
 
 function genIsleBinID(isle,bin) {
+    // dont forget to modify ZZDIR in html if this changes
     return `${isle}-${bin}`;
 }
 
