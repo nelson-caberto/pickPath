@@ -74,6 +74,7 @@ function loadpaths() {
     reader.onload = ()=>{
         data = JSON.parse(reader.result);
         renderFloor();
+        enableDownload();
     };
     reader.readAsText(file);
 }
