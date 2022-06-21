@@ -72,7 +72,8 @@ function loadpaths() {
     let file = pickPathfile.files[0];
     if (file == undefined) return;
     reader.onload = ()=>{
-        console.log(reader.result);
+        data = JSON.parse(reader.result);
+        renderFloor();
     };
     reader.readAsText(file);
 }

@@ -17,8 +17,8 @@
             <div class="col-3">
                 <!-- Left Pannel Inputs -->
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="pickPathfile">Path</label>
-                    <input type="file" class="form-control" id="pickPathfile">
+                    <label class="input-group-text" for="pickPathfile" style="width:156px;">Pick Path Select</label>
+                    <input type="file" class="form-control" id="pickPathfile" hidden>
                     <button class="btn btn-outline-secondary" type="button" onclick="loadpaths();">Load</button>
                 </div>
                 <div class="input-group">
@@ -69,7 +69,7 @@
                                     <label for="isleEnd">End</label>
                                 </div>
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">First Direction</span>
+                                    <span class="input-group-text">Direction</span>
                                     <button type="button" class="btn btn-secondary" onclick="revDir('Z','Z');">
                                         <div id="ZZDIR"></div>
                                     </button>
