@@ -17,10 +17,9 @@
             <div class="col-3">
                 <!-- Left Pannel Inputs -->
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="pickPathfile" style="width:98px;">Pick Path</label>
-                    <input type="file" class="form-control" id="pickPathfile" hidden>
+                    <label class="input-group-text" for="pickPathfile">Path</label>
+                    <input type="file" class="form-control" id="pickPathfile">
                     <button class="btn btn-outline-secondary" type="button" onclick="loadpaths();">Load</button>
-                    <button class="btn btn-outline-secondary" type="button" onclick="savepaths();">Save</button>
                 </div>
                 <div class="input-group">
                     <div class="form-floating mb-3">
@@ -38,6 +37,7 @@
                     <select id="downloadSelect" class="form-select" id="downloadCSV" aria-label="downloadCSV">
                         <option value="f" selected>Floor</option>
                         <option value="s">Section</option>
+                        <option value="p">Pick Path</option>
                     </select>
                 </div>
                 <div id="pickPath"></div>

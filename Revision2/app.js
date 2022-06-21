@@ -24,15 +24,15 @@ let dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=
 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
 </svg>`;
 
-document.getElementById('ZZDIR').setAttribute('id',`${genIsleBinID('Z','Z')}DIR`);
+document.getElementById('ZZDIR').setAttribute('id', `${genIsleBinID('Z', 'Z')}DIR`);
 
-let isleStart  = document.getElementById('isleStart');
-let isleEnd    = document.getElementById('isleEnd');
-let isleDir    = document.getElementById(`${genIsleBinID('Z','Z')}DIR`);
-let islePair   = document.getElementById('islePair');
-let binStart   = document.getElementById('binStart');
-let binOffset  = document.getElementById('binOffset');
-let binCount   = document.getElementById('binCount');
+let isleStart = document.getElementById('isleStart');
+let isleEnd = document.getElementById('isleEnd');
+let isleDir = document.getElementById(`${genIsleBinID('Z', 'Z')}DIR`);
+let islePair = document.getElementById('islePair');
+let binStart = document.getElementById('binStart');
+let binOffset = document.getElementById('binOffset');
+let binCount = document.getElementById('binCount');
 let binSegment = document.getElementById('binSegment');
 
 let downloadButton = document.getElementById('downloadButton');
@@ -42,29 +42,36 @@ let accordionPanel = document.getElementById('accordionPanel');
 let sectionLayout = document.getElementById('sectionLayout');
 let pickPath = document.getElementById('pickPath');
 
-isleDir.setAttribute('dir',direction);
-isleDir.innerHTML = direction?l:r;
+isleDir.setAttribute('dir', direction);
+isleDir.innerHTML = direction ? l : r;
 
 
 disableDownload();
 
 let data = {};
 let validation = {
-    addFloorButton:{
-        floorInput:false
+    addFloorButton: {
+        floorInput: false
     },
-    sectionAddButton:{
-        isleStart:false,
-        isleEnd:false,
-        binStart:false,
-        binOffset:false,
-        binSegment:false,
-        binCount:false
+    sectionAddButton: {
+        isleStart: false,
+        isleEnd: false,
+        binStart: false,
+        binOffset: false,
+        binSegment: false,
+        binCount: false
     }
 };
 
 function loadpaths() {
-    document.getElementById('pickPathfile').click();
+    let pickPathfile = document.getElementById('pickPathfile');
+    let reader = new FileReader();
+    let file = pickPathfile.files[0];
+    if (file == undefined) return;
+    reader.onload = ()=>{
+        console.log(reader.result);
+    };
+    reader.readAsText(file);
 }
 
 function savepaths() {
@@ -81,12 +88,12 @@ function disableDownload() {
     downloadSelect.disabled = true;
 }
 
-function revDir(isle,bin) {
-    const id = genIsleBinID(isle,bin);
+function revDir(isle, bin) {
+    const id = genIsleBinID(isle, bin);
     let arrow = document.getElementById(`${id}DIR`);
     let newdir = arrow.getAttribute("dir") !== 'true';
-    arrow.innerHTML = newdir?l:r;
-    arrow.setAttribute("dir",newdir);
+    arrow.innerHTML = newdir ? l : r;
+    arrow.setAttribute("dir", newdir);
 }
 
 function addFloor() {
@@ -140,18 +147,18 @@ function addSection() {
     const binCountV = parseInt(binCount.value);
 
     data[floor].push({
-        isleStart:isleStartV,
-        isleEnd:isleStartV%2==isleEndV%2?isleEndV+1:isleEndV,
-        isleDirection:isleDirV,
-        islePair:islePairV,
-        binStart:binStartV,
-        binOffset:binOffsetV,
-        binSegment:binSegmentV,
-        binCount:binCountV,
-        pickPath:[],
-        mods:{
-            direction:{},
-            exclude:{},
+        isleStart: isleStartV,
+        isleEnd: isleStartV % 2 == isleEndV % 2 ? isleEndV + 1 : isleEndV,
+        isleDirection: isleDirV,
+        islePair: islePairV,
+        binStart: binStartV,
+        binOffset: binOffsetV,
+        binSegment: binSegmentV,
+        binCount: binCountV,
+        pickPath: [],
+        mods: {
+            direction: {},
+            exclude: {},
         }
     });
 
@@ -184,7 +191,7 @@ function removeSection(floor) {
     removes.reverse();
     if (floor === layoutFloor) {
         for (selection of removes) {
-            data[floor].splice(selection,1);
+            data[floor].splice(selection, 1);
             if (selection == layoutSection) {
                 clearLayout();
                 clearPickPath();
@@ -192,8 +199,8 @@ function removeSection(floor) {
         }
     } else {
         for (selection of removes) {
-            data[floor].splice(selection,1);
-        }    
+            data[floor].splice(selection, 1);
+        }
     }
     renderSection(floor);
 }
@@ -217,7 +224,7 @@ function validate(event, condition, buttonID, validator) {
     if (condition) {
         validation[buttonID][validator] = false;
         event.classList.remove('is-invalid');
-        if (Object.values(validation['sectionAddButton']).filter(r=>r).length==0) {
+        if (Object.values(validation['sectionAddButton']).filter(r => r).length == 0) {
             button.disabled = false;
         }
     } else {
@@ -228,29 +235,29 @@ function validate(event, condition, buttonID, validator) {
 }
 
 function validateFloorInput(event) {
-    validate(event,event.validity.valid,'addFloorButton','floorInput');
+    validate(event, event.validity.valid, 'addFloorButton', 'floorInput');
 }
 
 function validateSectionAdd() {
-    validate(isleStart, isleStart.value > 0,                                    'sectionAddButton','isleStart');    
-    validate(isleEnd,   parseInt(isleEnd.value) > parseInt(isleStart.value),    'sectionAddButton','isleEnd');
-    validate(binStart,  parseInt(binStart.value) > 0,                           'sectionAddButton','binStart');
-    validate(binOffset, parseInt(binOffset.value) > parseInt(binCount.value),   'sectionAddButton','binOffset');
-    validate(binSegment,parseInt(binSegment.value) > 0,                         'sectionAddButton','binSegment');    
-    validate(binCount,  parseInt(binOffset.value) > parseInt(binCount.value),   'sectionAddButton','binCount');
+    validate(isleStart, isleStart.value > 0, 'sectionAddButton', 'isleStart');
+    validate(isleEnd, parseInt(isleEnd.value) > parseInt(isleStart.value), 'sectionAddButton', 'isleEnd');
+    validate(binStart, parseInt(binStart.value) > 0, 'sectionAddButton', 'binStart');
+    validate(binOffset, parseInt(binOffset.value) > parseInt(binCount.value), 'sectionAddButton', 'binOffset');
+    validate(binSegment, parseInt(binSegment.value) > 0, 'sectionAddButton', 'binSegment');
+    validate(binCount, parseInt(binOffset.value) > parseInt(binCount.value), 'sectionAddButton', 'binCount');
 }
 
-function renderLayoutCol(isle,bin,binCount,direction,directionHTML,step) {
-    const id = genIsleBinID(isle,bin);
-    let col = 
-    `
+function renderLayoutCol(isle, bin, binCount, direction, directionHTML, step) {
+    const id = genIsleBinID(isle, bin);
+    let col =
+        `
     <div class="col border">
         <div class="container">
             <div class="row mb-1">
                 <div class="col">
                 </div>
                 <div class="col border-bottom" align="center">
-                    <span class="align-middle">${bin}-${bin+binCount}</span>
+                    <span class="align-middle">${bin}-${bin + binCount}</span>
                 </div>
             </div>
             <div class="row align-items-center">
@@ -262,15 +269,15 @@ function renderLayoutCol(isle,bin,binCount,direction,directionHTML,step) {
                             </div>
                         </div>`
 
-    if (step==2) {
-        col +=         `<div class="row mb-2">
+    if (step == 2) {
+        col += `<div class="row mb-2">
                             <div class="col border rounded" align="center">
-                                <span class="align-middle">${isle+1}</span>
+                                <span class="align-middle">${isle + 1}</span>
                             </div>
                         </div>`
     }
 
-    col +=         `</div>
+    col += `</div>
                 </div>
                 <div class="col">
                     <div class="input-group mb-3" align="center">
@@ -285,15 +292,15 @@ function renderLayoutCol(isle,bin,binCount,direction,directionHTML,step) {
     return col;
 }
 
-function renderLayoutRow(isle,direction,directionHTML,layout,step) {
+function renderLayoutRow(isle, direction, directionHTML, layout, step) {
     const binStart = layout.binStart;
     const binOffset = layout.binOffset;
     const binSegment = layout.binSegment;
     const binCount = layout.binCount;
     const binMax = binStart + binOffset * binSegment;
     let secLayout = `<div class="row">`
-    for (let i = binStart; i < binMax; i+=binOffset) {
-        secLayout += renderLayoutCol(isle,i,binCount,direction,directionHTML,step);
+    for (let i = binStart; i < binMax; i += binOffset) {
+        secLayout += renderLayoutCol(isle, i, binCount, direction, directionHTML, step);
     }
     sectionLayout.innerHTML += secLayout;
 }
@@ -312,27 +319,27 @@ function renderLayout(event) {
     const step = layout.islePair;
     let direction = layout.direction;
     sectionLayout.innerHTML = '';
-    for (let i = start; i < end; i+=step) {
-        renderLayoutRow(i,direction,direction?l:r,layout,step);
+    for (let i = start; i < end; i += step) {
+        renderLayoutRow(i, direction, direction ? l : r, layout, step);
         direction = !direction;
     }
-    sectionLayout.setAttribute('floor',floor);
-    sectionLayout.setAttribute('sectionIndex',section);
+    sectionLayout.setAttribute('floor', floor);
+    sectionLayout.setAttribute('sectionIndex', section);
     renderPickPath();
     renderLayoutPickPath();
 }
 
-function genIsleBinID(isle,bin) {
+function genIsleBinID(isle, bin) {
     return `${isle}-${bin}`;
 }
 
-function togglePath(isle,bin) {
+function togglePath(isle, bin) {
     const floor = sectionLayout.getAttribute('floor');
     const section = sectionLayout.getAttribute('sectionIndex');
     let fsPickPath = data[floor][section].pickPath;
-    let id = genIsleBinID(isle,bin);
+    let id = genIsleBinID(isle, bin);
     if (fsPickPath.includes(id)) {
-        fsPickPath.splice(fsPickPath.indexOf(id),1);
+        fsPickPath.splice(fsPickPath.indexOf(id), 1);
         document.getElementById(id).innerText = " X ";
     } else {
         fsPickPath.push(id);
@@ -350,7 +357,7 @@ function renderPickPath() {
     const startI = section.isleStart;
     const endI = section.isleEnd;
     const startB = section.binStart;
-    const endB = section.binStart*section.binSegment;
+    const endB = section.binStart * section.binSegment;
     let isleOrder = `
     <h6 align="center">Pick Path <em>${startI}-${endI},${startB}-${endB}</em></h6>
         <select class="form-select" multiple aria-label="isleOrder" size="${fsPickPath.length}">`;
