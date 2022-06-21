@@ -113,12 +113,30 @@ function disableDownload() {
     downloadSelect.disabled = true;
 }
 
-function revDir(isle, bin) {
+function updateDirection(isle,bin) {
     const id = genIsleBinID(isle, bin);
     let arrow = document.getElementById(`${id}DIR`);
     let newdir = arrow.getAttribute("dir") !== 'true';
+    const floor = sectionLayout.getAttribute('floor');
+    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+    let modsDir = data[floor][sectionIndex]['mods']['direction'];
+    modsDir[id] = newdir;
+    renderLayoutDirection(id,newdir);
+}
+
+function renderLayoutDirection(id,newdir) {
+    let arrow = document.getElementById(`${id}DIR`);
     arrow.innerHTML = newdir ? l : r;
     arrow.setAttribute("dir", newdir);
+}
+
+function renderLayoutDirections() {
+    const floor = sectionLayout.getAttribute('floor');
+    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+    let modsDir = data[floor][sectionIndex]['mods']['direction'];
+    for (id in modsDir) {
+        renderLayoutDirection(id,modsDir[id]);
+    }
 }
 
 function addFloor() {
@@ -146,7 +164,7 @@ function renderFloorItem(floor) {
         </h2>
         <div id="${floor}AccordianCollapse" class="accordion-collapse collapse" aria-labelledby="${floor}AccordianHeading" data-bs-parent="#accordionPanel">
             <div class="accordion-body">
-                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onclick="renderLayout(this);" onchange="renderLayout(this);"></select>
+                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onchange="renderLayout(this);"></select>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sectionModal" floor="${floor}">${plus}</button>
                     <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${dash}</button>
@@ -306,7 +324,7 @@ function renderLayoutCol(isle, bin, binCount, direction, directionHTML, step) {
                 </div>
                 <div class="col">
                     <div class="input-group mb-3" align="center">
-                        <button type="button" class="btn btn-secondary" onclick="revDir(${isle},${bin});"><div id="${id}DIR" dir="${direction}" binOffset="${binOffset}">${directionHTML}</div></button>
+                        <button type="button" class="btn btn-secondary" onclick="updateDirection(${isle},${bin});"><div id="${id}DIR" dir="${direction}" binOffset="${binOffset}">${directionHTML}</div></button>
                         <button class="btn btn-outline-secondary" type="button" onclick="togglePath(${isle},${bin});" id="${id}"> X </button>
                     </div>
                 </div>
@@ -352,6 +370,7 @@ function renderLayout(event) {
     sectionLayout.setAttribute('sectionIndex', section);
     renderPickPath();
     renderLayoutPickPath();
+    renderLayoutDirections();
 }
 
 function genIsleBinID(isle, bin) {
