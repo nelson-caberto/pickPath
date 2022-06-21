@@ -23,6 +23,9 @@ let plus = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill=
 let dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
 </svg>`;
+let x = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+<path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+</svg>`;
 
 document.getElementById('ZZDIR').setAttribute('id', `${genIsleBinID('Z', 'Z')}DIR`);
 
@@ -74,8 +77,28 @@ function loadpaths() {
     reader.readAsText(file);
 }
 
-function savepaths() {
-    alert('TODO: write me');
+function download() {
+    let option = downloadSelect.selectedOptions[0].value;
+    let a = document.createElement('a');
+    const csvContent = "still gotta make";
+    switch (option) {
+        case 'f':
+            a.setAttribute('href','data:text/plain;charset=utf-8, '+encodeURIComponent(csvContent));
+            a.setAttribute('download',`Floor.csv`);
+            break;
+        case 's':
+            a.setAttribute('href','data:text/plain;charset=utf-8, '+encodeURIComponent(csvContent));
+            a.setAttribute('download',`Section.csv`);
+            break;
+        case 'p':
+            a.setAttribute('href',"data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)));
+            a.setAttribute('download',`PickPath.json`);
+            break;
+        default:
+            console.log('should never see this');
+            break;
+    }
+    a.click();
 }
 
 function enableDownload() {
@@ -366,12 +389,15 @@ function renderPickPath() {
     }
     isleOrder += `
         </select>
-        <div class="btn-group" role="group" aria-label="$pickPathMoveButtons">
+        <div class="btn-group" role="group" aria-label="pickPathMoveButtons">
             <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${u}</button>
             <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${d}</button>
         </div>
-        <div class="btn-group" role="group" aria-label="$pickPathRemoveButton">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">REMOVE</button>
+        <div class="btn-group" role="group" aria-label="pickPathRemoveButton">
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${x}</button>
+        </div>
+        <div class="btn-group" role="group" aria-label="pickPathResetButton">
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">Reset</button>
         </div>`;
     pickPath.innerHTML = isleOrder;
 }
