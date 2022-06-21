@@ -164,7 +164,7 @@ function renderFloorItem(floor) {
         </h2>
         <div id="${floor}AccordianCollapse" class="accordion-collapse collapse" aria-labelledby="${floor}AccordianHeading" data-bs-parent="#accordionPanel">
             <div class="accordion-body">
-                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onchange="renderLayout(this);"></select>
+                <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onclick="renderLayout(this);"></select>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
                     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sectionModal" floor="${floor}">${plus}</button>
                     <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${dash}</button>
