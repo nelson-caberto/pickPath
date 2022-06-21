@@ -21,6 +21,10 @@
                     <input type="file" class="form-control" id="pickPathfile" hidden>
                     <button class="btn btn-outline-secondary" type="button" onclick="loadpaths();">Load</button>
                 </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" style="width:164px;">Shelf Patterns</span>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#shelfModal" onclick="setShelfModalReturn('edit');">Edit</button>
+                </div>
                 <div class="input-group">
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="addFloorInput" placeholder="Floor" value="P-2-M"
@@ -33,7 +37,8 @@
                 </div>
                 <div class="accordion mb-3" id="accordionPanel"></div>
                 <div class="input-group mb-3">
-                    <button id="downloadButton" class="btn btn-outline-secondary" type="button" onclick="download();">Download</button>
+                    <button id="downloadButton" class="btn btn-outline-secondary" type="button"
+                        onclick="download();">Download</button>
                     <select id="downloadSelect" class="form-select" aria-label="downloadSelect">
                         <option value="f" selected>Floor</option>
                         <option value="s">Section</option>
@@ -48,7 +53,25 @@
         </div>
     </div>
 
-    <div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="sectionModalLabel" aria-hidden="true">
+    <div class="modal fade" id="shelfModal" tabindex="-1" aria-labelledby="shelfModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="shelfModalLabel">meh</h5>
+                </div>
+                <div class="modal-body">
+                    something
+                </div>
+                <div class="modal-footer">
+                    <div id="shelfModalReturn">
+                    </div>
+                    <button type="button" class="btn btn-primary">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="sectionModal" tabindex="-1" aria-labelledby="sectionModal" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -103,10 +126,33 @@
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" onclick="addSection();" id="sectionAddButton">Add</button>
+                </div>
+                <div class="modal-footer">
+                    <div class="input-group mb-3">
+                        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#shelfPatternCollapse" aria-expanded="false"
+                            aria-controls="shelfPatternCollapse">
+                            Shelf Pattern
+                        </button>
+                        <select id="shelfPatternSelect" class="form-select" aria-label="shelfPatternSelect">
+                            <option value="0" selected>Default Isle Pair</option>
+                            <option value="1">Default Single Isle</option>
+                        </select>
+                        <button type="button" class="btn btn-outline-secondary" id="shelfPatternAddButton"
+                            data-bs-toggle="modal" data-bs-target="#shelfModal"
+                            onclick="setShelfModalReturn('sectionModal');"></button>
                     </div>
+                    <div class="collapse" id="shelfPatternCollapse">
+                        <div class="card card-body" id="shelfPatternViewBody">
+                            Some placeholder content for the collapse component. This panel is hidden by default but
+                            revealed when the user activates the relevant trigger.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="addSection();"
+                        id="sectionAddButton">Add</button>
                 </div>
             </div>
         </div>

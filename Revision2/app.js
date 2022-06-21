@@ -28,6 +28,7 @@ let x = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="cu
 </svg>`;
 
 document.getElementById('ZZDIR').setAttribute('id', `${genIsleBinID('Z', 'Z')}DIR`);
+document.getElementById('shelfPatternAddButton').innerHTML = plus;
 
 let isleStart = document.getElementById('isleStart');
 let isleEnd = document.getElementById('isleEnd');
@@ -65,6 +66,24 @@ let validation = {
         binCount: false
     }
 };
+let shelfs = [
+    {
+        "Default Isle Pair": {
+            groundup_labels: ['A','B','C','D','E'],
+            batch_size: 8,
+            pattern: "gridlist",
+            pair:0
+        }
+    },
+    {
+        "Default Signle Isle": {
+            groundup_labels: ['A','B','C','D','E'],
+            batch_size: 8,
+            pattern: "gridlist",
+            pair:1
+        }
+    }
+];
 
 function loadpaths() {
     let pickPathfile = document.getElementById('pickPathfile');
@@ -176,6 +195,20 @@ function renderFloorItem(floor) {
             </div>
         </div>
     </div>`;
+}
+
+function setShelfModalReturn(r) {
+    let shelfReturn = document.getElementById("shelfModalReturn");
+    switch(r) {
+        case 'sectionModal':
+            const floor = document.getElementById('emfloor').innerText;
+            shelfReturn.innerHTML = `<button class="btn btn-secondary" data-bs-target="#sectionModal" data-bs-toggle="modal" floor="${floor}">Close</button>`;
+            break;
+        case 'edit':
+            shelfReturn.innerHTML = `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
+        default:
+            break;
+    }
 }
 
 function addSection() {
