@@ -23,7 +23,8 @@
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="width:164px;">Shelf Patterns</span>
-                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal" data-bs-target="#shelfModal" onclick="setShelfModalReturn('edit');">Edit</button>
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#shelfModal" onclick="setShelfModalReturn('edit');">Edit</button>
                 </div>
                 <div class="input-group">
                     <div class="form-floating mb-3">
@@ -57,10 +58,23 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="shelfModalLabel">meh</h5>
+                    <h5 class="modal-title" id="shelfModalLabel">Shelf Patterns</h5>
                 </div>
                 <div class="modal-body">
-                    something
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="floatingInputGrid" value="5">
+                                <label for="floatingInputGrid">Columns</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="floatingInputGrid" value="8">
+                                <label for="floatingInputGrid">Rows</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <div id="shelfModalReturn">

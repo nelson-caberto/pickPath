@@ -39,7 +39,7 @@ function updateLayoutOrder() {
     }
 }
 
-function addcol(isle,binCol,binCount,direction,directionHTML) {
+function addcol(isle,binCol,binCount,direction,directionHTML,binOffset) {
     let col = 
     `
     <div class="col border">
@@ -85,9 +85,9 @@ function addrow(isle,direction,directionHTML) {
     const binSegment = parseInt(document.getElementById('binSegment').value);
     const binCount = parseInt(document.getElementById('binCount').value);
     const binMax = binStart + binOffset * binSegment;
-    let layout = `<div class="row">`;
+    let layout = `<div class="row">`
     for (let i = binStart; i < binMax; i+=binOffset) {
-        layout += addcol(isle,i,binCount,direction,directionHTML);
+        layout += addcol(isle,i,binCount,direction,directionHTML,binOffset);
     }
     document.getElementById('layout').innerHTML += layout;
 }
