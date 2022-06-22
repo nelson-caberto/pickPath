@@ -302,7 +302,7 @@ function validate(event, condition, buttonID, validator) {
     if (condition) {
         validation[buttonID][validator] = false;
         event.classList.remove('is-invalid');
-        if (Object.values(validation['sectionAddButton']).filter(r => r).length == 0) {
+        if (Object.values(validation[buttonID]).filter(r => r).length == 0) {
             button.disabled = false;
         }
     } else {
