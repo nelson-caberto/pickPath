@@ -136,10 +136,12 @@ function updateDirection(isle,bin) {
     const id = genIsleBinID(isle, bin);
     let arrow = document.getElementById(`${id}DIR`);
     let newdir = arrow.getAttribute("dir") !== 'true';
-    const floor = sectionLayout.getAttribute('floor');
-    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
-    let modsDir = data[floor][sectionIndex]['mods']['direction'];
-    modsDir[id] = newdir;
+    if (isle != 'Z' && bin != 'Z') {
+        const floor = sectionLayout.getAttribute('floor');
+        const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+        let modsDir = data[floor][sectionIndex]['mods']['direction'];
+        modsDir[id] = newdir;
+    }
     renderLayoutDirection(id,newdir);
 }
 
