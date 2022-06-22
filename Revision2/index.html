@@ -17,9 +17,9 @@
             <div class="col-3">
                 <!-- Left Pannel Inputs -->
                 <div class="input-group mb-3">
-                    <label class="input-group-text" for="pickPathfile" style="width:156px;">Pick Path Select</label>
-                    <input type="file" class="form-control" id="pickPathfile" hidden>
-                    <button class="btn btn-outline-secondary" type="button" onclick="loadpaths();">Load</button>
+                    <label class="input-group-text" style="width:156px;">Pick Path Select</label>
+                    <input type="file" class="form-control" id="pickPathfile" onchange="loadpaths();" hidden>
+                    <button class="btn btn-outline-secondary" type="button" onclick="loadClicked();">Load</button>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text" style="width:164px;">Shelf Patterns</span>

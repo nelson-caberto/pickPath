@@ -4,6 +4,8 @@ sectionModal.addEventListener('show.bs.modal', event => {
     document.getElementById('sectionModalLabel').innerHTML = `Create Section on Floor <em id="emfloor">${floor}</em>`;
 });
 
+const moveU = -1;
+const moveD = 1;
 let direction = false;
 let svg_l = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
@@ -96,6 +98,10 @@ function loadpaths() {
         enableDownload();
     };
     reader.readAsText(file);
+}
+
+function loadClicked() {
+    document.getElementById('pickPathfile').click();
 }
 
 function download() {
@@ -191,8 +197,8 @@ function renderFloorItem(floor) {
                     <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${svg_dash}</button>
                 </div>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
-                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_u}</button>
-                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_d}</button>
+                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this,moveU);">${svg_u}</button>
+                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this,moveD);">${svg_d}</button>
                 </div>
             </div>
         </div>
@@ -394,7 +400,7 @@ function renderLayout(event) {
     const layout = data[floor][section];
     const start = layout.isleStart;
     const end = layout.isleEnd;
-    const step = layout.islePair;
+    const step = layout.islePair?2:1;
     let direction = layout.direction;
     sectionLayout.innerHTML = '';
     for (let i = start; i < end; i += step) {
@@ -470,4 +476,29 @@ function renderLayoutPickPath() {
         let id = fsPickPath[element];
         document.getElementById(id).innerText = parseInt(element) + 1;
     }
+}
+
+function moveSelected(event,moveDir) {
+    let floor = event.parentElement.getAttribute('aria-label');
+    floor = floor.slice(0,floor.length-14);
+    let sectionIndices = [];
+    for (option of document.getElementById(`${floor}SectionBody`).selectedOptions) {
+        sectionIndices.push(parseInt(option.getAttribute('sectionIndex')));
+    }
+    sectionIndices.reverse();
+    let temp;
+    for (sectionIndex of sectionIndices) {
+        if ((sectionIndex == -1) ||
+            (sectionIndex == 0 && moveDir == moveU) ||
+            (sectionIndex == data[floor].length-1 && moveDir == moveD)) continue;
+        temp = data[floor][sectionIndex+moveDir];
+        data[floor][sectionIndex+moveDir] = data[floor][sectionIndex];
+        data[floor][sectionIndex] = temp;
+    }
+    renderSection(floor);
+}
+
+//for troubleshooting when needing to compare changes in same object
+function copy(obj) {
+    return JSON.parse(JSON.stringify(obj));
 }
