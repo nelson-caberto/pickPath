@@ -5,30 +5,30 @@ sectionModal.addEventListener('show.bs.modal', event => {
 });
 
 let direction = false;
-let l = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+let svg_l = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
 </svg>`;
-let r = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+let svg_r = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
 </svg>`;
-let u = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
+let svg_u = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
 </svg>`;
-let d = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
+let svg_d = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
 </svg>`;
-let plus = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+let svg_plus = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"/>
 </svg>`;
-let dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
+let svg_dash = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dash-lg" viewBox="0 0 16 16">
 <path fill-rule="evenodd" d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"/>
 </svg>`;
-let x = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+let svg_x = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
 <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
 </svg>`;
 
 document.getElementById('ZZDIR').setAttribute('id', `${genIsleBinID('Z', 'Z')}DIR`);
-document.getElementById('shelfPatternAddButton').innerHTML = plus;
+document.getElementById('shelfPatternAddButton').innerHTML = svg_plus;
 
 let isleStart = document.getElementById('isleStart');
 let isleEnd = document.getElementById('isleEnd');
@@ -47,7 +47,7 @@ let sectionLayout = document.getElementById('sectionLayout');
 let pickPath = document.getElementById('pickPath');
 
 isleDir.setAttribute('dir', direction);
-isleDir.innerHTML = direction ? l : r;
+isleDir.innerHTML = direction ? svg_l : svg_r;
 
 
 disableDownload();
@@ -147,7 +147,7 @@ function updateDirection(isle,bin) {
 
 function renderLayoutDirection(id,newdir) {
     let arrow = document.getElementById(`${id}DIR`);
-    arrow.innerHTML = newdir ? l : r;
+    arrow.innerHTML = newdir ? svg_l : svg_r;
     arrow.setAttribute("dir", newdir);
 }
 
@@ -187,12 +187,12 @@ function renderFloorItem(floor) {
             <div class="accordion-body">
                 <select id="${floor}SectionBody" class="form-select" multiple aria-label="${floor}SectionBody" onclick="renderLayout(this);"></select>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sectionModal" floor="${floor}">${plus}</button>
-                    <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${dash}</button>
+                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#sectionModal" floor="${floor}">${svg_plus}</button>
+                    <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${svg_dash}</button>
                 </div>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
-                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${u}</button>
-                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${d}</button>
+                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_u}</button>
+                    <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_d}</button>
                 </div>
             </div>
         </div>
@@ -218,7 +218,7 @@ function addSection() {
     const isleStartV = parseInt(isleStart.value);
     const isleEndV = parseInt(isleEnd.value);
     const isleDirV = isleDir.getAttribute('dir') === 'true';
-    const islePairV = parseInt(document.getElementById('islePair').value);
+    const islePairV = document.getElementById('islePair').checked;
     const binStartV = parseInt(binStart.value);
     const binOffsetV = parseInt(binOffset.value);
     const binSegmentV = parseInt(binSegment.value);
@@ -398,7 +398,7 @@ function renderLayout(event) {
     let direction = layout.direction;
     sectionLayout.innerHTML = '';
     for (let i = start; i < end; i += step) {
-        renderLayoutRow(i, direction, direction ? l : r, layout, step);
+        renderLayoutRow(i, direction, direction ? svg_l : svg_r, layout, step);
         direction = !direction;
     }
     sectionLayout.setAttribute('floor', floor);
@@ -446,11 +446,11 @@ function renderPickPath() {
     isleOrder += `
         </select>
         <div class="btn-group" role="group" aria-label="pickPathMoveButtons">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${u}</button>
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${d}</button>
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_u}</button>
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_d}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathRemoveButton">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${x}</button>
+            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_x}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathResetButton">
             <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">Reset</button>
