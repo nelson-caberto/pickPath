@@ -4,6 +4,8 @@ sectionModal.addEventListener('show.bs.modal', event => {
     document.getElementById('sectionModalLabel').innerHTML = `Create Section on Floor <em id="emfloor">${floor}</em>`;
 });
 
+const sectionSelect = 0;
+const pickPathSelect = 1;
 const moveU = -1;
 const moveD = 1;
 let direction = false;
@@ -197,8 +199,8 @@ function renderFloorItem(floor) {
                     <button type="button" class="btn btn-secondary" onclick="removeSection('${floor}');">${svg_dash}</button>
                 </div>
                 <div class="btn-group" role="group" aria-label="${floor}SectionButtons">
-                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this,moveU);">${svg_u}</button>
-                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this,moveD);">${svg_d}</button>
+                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this.parentElement.parentElement.childNodes[1],moveU,renderSection,${sectionSelect});">${svg_u}</button>
+                    <button type="button" class="btn btn-secondary" onclick="moveSelected(this.parentElement.parentElement.childNodes[1],moveD,renderSection,${sectionSelect});">${svg_d}</button>
                 </div>
             </div>
         </div>
@@ -446,14 +448,14 @@ function renderPickPath() {
     let isleOrder = `
     <h6 align="center">Pick Path <em>${startI}-${endI},${startB}-${endB}</em></h6>
         <select class="form-select" multiple aria-label="isleOrder" size="${fsPickPath.length}">`;
-    for (subSec of fsPickPath) {
-        isleOrder += `<option value="${subSec}">${subSec}</option>`;
+    for (subSec in fsPickPath) {
+        isleOrder += `<option value="${fsPickPath[subSec]}" sectionIndex="${subSec}">${fsPickPath[subSec]}</option>`;
     }
     isleOrder += `
         </select>
         <div class="btn-group" role="group" aria-label="pickPathMoveButtons">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_u}</button>
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_d}</button>
+            <button type="button" class="btn btn-secondary" onclick="moveSelected(this.parentElement.previousSibling.previousElementSibling,moveU,renderPickPath,${pickPathSelect});">${svg_u}</button>
+            <button type="button" class="btn btn-secondary" onclick="moveSelected(this.parentElement.previousSibling.previousElementSibling,moveD,renderPickPath,${pickPathSelect});">${svg_d}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathRemoveButton">
             <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_x}</button>
@@ -478,24 +480,59 @@ function renderLayoutPickPath() {
     }
 }
 
-function moveSelected(event,moveDir) {
-    let floor = event.parentElement.getAttribute('aria-label');
-    floor = floor.slice(0,floor.length-14);
-    let sectionIndices = [];
-    for (option of document.getElementById(`${floor}SectionBody`).selectedOptions) {
-        sectionIndices.push(parseInt(option.getAttribute('sectionIndex')));
+// function moveSelected(event,moveDir) {
+//     let floor = event.parentElement.getAttribute('aria-label');
+//     floor = floor.slice(0,floor.length-14);
+//     let sectionIndices = [];
+//     for (option of document.getElementById(`${floor}SectionBody`).selectedOptions) {
+//         sectionIndices.push(parseInt(option.getAttribute('sectionIndex')));
+//     }
+//     sectionIndices.reverse();
+//     let temp;
+//     for (sectionIndex of sectionIndices) {
+//         if ((sectionIndex == -1) ||
+//             (sectionIndex == 0 && moveDir == moveU) ||
+//             (sectionIndex == data[floor].length-1 && moveDir == moveD)) continue;
+//         temp = data[floor][sectionIndex+moveDir];
+//         data[floor][sectionIndex+moveDir] = data[floor][sectionIndex];
+//         data[floor][sectionIndex] = temp;
+//     }
+//     renderSection(floor);
+// }
+
+function moveSelected(event,moveDir,render,whichSelect) {
+    let floor = document.getElementsByClassName('accordion-button');
+    for (item of floor) {
+        if (item.getAttribute('aria-expanded')==='true') {
+            floor = item.getAttribute('aria-controls');
+        }
     }
-    sectionIndices.reverse();
-    let temp;
-    for (sectionIndex of sectionIndices) {
-        if ((sectionIndex == -1) ||
-            (sectionIndex == 0 && moveDir == moveU) ||
-            (sectionIndex == data[floor].length-1 && moveDir == moveD)) continue;
-        temp = data[floor][sectionIndex+moveDir];
-        data[floor][sectionIndex+moveDir] = data[floor][sectionIndex];
-        data[floor][sectionIndex] = temp;
+    floor = floor.slice(0,floor.length-17);
+    let indices = [];
+    for (option of event.selectedOptions) {
+        indices.push(parseInt(option.getAttribute('sectionIndex')));
     }
-    renderSection(floor);
+    indices.reverse();
+    let temp, select;
+    const section = sectionLayout.getAttribute('sectionIndex');
+    switch (whichSelect) {
+        case sectionSelect:
+            select = data[floor];
+            break;
+        case pickPathSelect:
+            select = data[floor][section].pickPath;
+        default:
+            break;
+    }
+    for (index of indices) {
+        if ((index == -1) ||
+            (index == 0 && moveDir == moveU) ||
+            (index == data[floor].length-1 && moveDir == moveD)) continue;
+        temp = select[index+moveDir];
+        select[index+moveDir] = select[index];
+        select[index] = temp;
+    }
+    render(floor);
 }
 
 //for troubleshooting when needing to compare changes in same object
