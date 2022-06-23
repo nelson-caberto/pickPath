@@ -287,6 +287,22 @@ function removeSection(floor) {
     renderSection(floor);
 }
 
+function removePick(event) {
+    const floor = sectionLayout.getAttribute('floor');
+    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+    let pickPath = data[floor][sectionIndex].pickPath;
+    let options = event.parentElement.previousElementSibling.previousElementSibling.selectedOptions;
+    let removes = [];
+    for (option of options) {
+        removes.push(parseInt(option.getAttribute('sectionIndex')));
+    }
+    removes.reverse()
+    for (index of removes) {
+        pickPath.splice(index,1);
+    }
+    renderPickPath();
+}
+
 function renderFloor() {
     accordionPanel.innerHTML = '';
     for (floor in data) {
@@ -454,7 +470,7 @@ function renderPickPath() {
             <button type="button" class="btn btn-secondary" onclick="moveSelected(this.parentElement.previousSibling.previousElementSibling,moveD,renderPickPath,${pickPathSelect});">${svg_d}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathRemoveButton">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">${svg_x}</button>
+            <button type="button" class="btn btn-secondary" onclick="removePick(this);">${svg_x}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathResetButton">
             <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">Reset</button>
