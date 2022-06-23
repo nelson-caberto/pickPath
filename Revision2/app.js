@@ -208,7 +208,7 @@ function setShelfModalReturn(r) {
     switch(r) {
         case 'sectionModal':
             const floor = document.getElementById('emfloor').innerText;
-            shelfReturn.innerHTML = `<button class="btn btn-secondary" data-bs-target="#sectionModal" data-bs-toggle="modal" floor="${floor}">Close</button>`;
+            shelfReturn.innerHTML = `<button class="btn btn-secondary" data-bs-target="#sectionModal" data-bs-toggle="modal" floor="${floor}">Back</button>`;
             break;
         case 'edit':
             shelfReturn.innerHTML = `<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>`;
