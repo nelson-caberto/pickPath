@@ -102,10 +102,6 @@ function loadpaths() {
     reader.readAsText(file);
 }
 
-function loadClicked() {
-    document.getElementById('pickPathfile').click();
-}
-
 function download() {
     let option = downloadSelect.selectedOptions[0].value;
     let a = document.createElement('a');
