@@ -303,6 +303,20 @@ function removePick(event) {
     renderPickPath();
 }
 
+function resetPick() {
+    const floor = sectionLayout.getAttribute('floor');
+    const sectionIndex = sectionLayout.getAttribute('sectionIndex');
+
+    section = data[floor][sectionIndex];
+    section.pickPath = [];
+    section.mods = {
+        direction: {},
+        exclude: {},
+    };
+
+    renderLayout(document.getElementById(`${floor}SectionBody`));
+}
+
 function renderFloor() {
     accordionPanel.innerHTML = '';
     for (floor in data) {
@@ -473,7 +487,7 @@ function renderPickPath() {
             <button type="button" class="btn btn-secondary" onclick="removePick(this);">${svg_x}</button>
         </div>
         <div class="btn-group" role="group" aria-label="pickPathResetButton">
-            <button type="button" class="btn btn-secondary" onclick="alert('TODO: write me');">Reset</button>
+            <button type="button" class="btn btn-secondary" onclick="resetPick();">Reset</button>
         </div>`;
     pickPath.innerHTML = isleOrder;
 }
