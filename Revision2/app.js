@@ -565,3 +565,42 @@ function moveSelected(event,moveDir,render,whichSelect) {
 function copy(obj) {
     return JSON.parse(JSON.stringify(obj));
 }
+
+let t = {};
+function renderTableEdit() {
+    let table = document.getElementById('shelfPatternEdit');
+    let rows = parseInt(document.getElementById('rows').value);
+    let cols = parseInt(document.getElementById('cols').value);
+    table.innerHTML = '';
+    // Table Body
+    for (i of range(1,rows+1)) {
+        let row = table.insertRow(0);
+        t[i] = row;
+        for (j of range(1,cols+1)) {
+            let col = row.insertCell();
+            col.innerText = `${i},${j}`;
+            col.setAttribute('align','center');
+        }
+    }
+    // First Column Labels
+    for (label of range(1,rows+1)) {
+        c = t[label].insertCell(0);
+        c.innerText = ['A','B','C','D','E'][label-1];
+    }
+    // Top Row Headers
+    let row = table.insertRow(0);
+    let cell = row.insertCell(0);
+    cell.innerText = 'Isle';
+    for (j of range(1,cols+1)) {
+        let cell = row.insertCell();
+        cell.innerText = 100+j;
+    }
+}
+
+// https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
+const range = (start, end) => {
+    const length = end - start;
+    return Array.from({ length }, (_, i) => start + i);
+}
+
+renderTableEdit();
