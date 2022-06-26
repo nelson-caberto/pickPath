@@ -57,23 +57,33 @@
 
     <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="shelfModal" tabindex="-1"
         aria-labelledby="shelfModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="shelfModalLabel">Shelf Patterns</h5>
                 </div>
                 <div class="modal-body">
-                    <div class="container" onchange="renderTableEdit();">
+                    <div class="container">
                         <div class="row mb-3">
                             <div class="col-md">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="rows" value="5" max="5" min="1">
+                                    <input type="text" class="form-control" id="patternName" placeholder="Name"
+                                        value="" aria-label="patternName"
+                                        aria-describedby="patternName">
+                                    <label for="patternName">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="rows" value="5" max="5" min="1"
+                                        onchange="renderTableEdit();">
                                     <label for="rows">Rows</label>
                                 </div>
                             </div>
                             <div class="col-md">
                                 <div class="form-floating">
-                                    <input type="number" class="form-control" id="cols" value="8" max="8" min="1">
+                                    <input type="number" class="form-control" id="cols" value="8" max="8" min="1"
+                                        onchange="renderTableEdit();">
                                     <label for="cols">Columns</label>
                                 </div>
                             </div>
@@ -82,7 +92,7 @@
                                     <label class="input-group-text" for="patternIslePair">Pair</label>
                                     <div class="input-group-text">
                                         <input id="patternIslePair" class="form-check-input mt-0" type="checkbox"
-                                            value="" aria-label="patternIslePair">
+                                            onchange="renderTableEdit();" aria-label="patternIslePair">
                                     </div>
                                 </div>
                             </div>

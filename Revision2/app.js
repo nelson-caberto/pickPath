@@ -568,32 +568,77 @@ function copy(obj) {
 
 let t = {};
 function renderTableEdit() {
+    function addCell(row,text) {
+        let col = row.insertCell();
+        col.innerText = text;
+        col.setAttribute('align','center');
+    }
+
     let table = document.getElementById('shelfPatternEdit');
-    let rows = parseInt(document.getElementById('rows').value);
-    let cols = parseInt(document.getElementById('cols').value);
+    const rows = parseInt(document.getElementById('rows').value);
+    const cols = parseInt(document.getElementById('cols').value);
+    const pair = document.getElementById('patternIslePair').checked;
+    const rowLabels = ['A','B','C','D','E'];
     table.innerHTML = '';
-    // Table Body
-    for (i of range(1,rows+1)) {
-        let row = table.insertRow(0);
-        t[i] = row;
-        for (j of range(1,cols+1)) {
-            let col = row.insertCell();
-            col.innerText = `${i},${j}`;
-            col.setAttribute('align','center');
+    if (pair) {
+        // Table Body
+        for (i of range(1,rows+1)) {
+            let row = table.insertRow();
+            t[i] = row;
+            for (j of range(1,cols+1)) {
+                addCell(row,`${i},${j}`);
+            }
         }
-    }
-    // First Column Labels
-    for (label of range(1,rows+1)) {
-        c = t[label].insertCell(0);
-        c.innerText = ['A','B','C','D','E'][label-1];
-    }
-    // Top Row Headers
-    let row = table.insertRow(0);
-    let cell = row.insertCell(0);
-    cell.innerText = 'Isle';
-    for (j of range(1,cols+1)) {
-        let cell = row.insertCell();
-        cell.innerText = 100+j;
+        table.insertRow(0).insertCell();
+        for (i of range(1,rows+1)) {
+            let row = table.insertRow(0);
+            t[i+rows] = row;
+            for (j of range(1,cols+1)) {
+                addCell(row,`${i},${j}`);
+            }
+        }
+        // First Column Labels
+        for (label of range(1,rows+1)) {
+            c = t[label].insertCell(0);
+            c.innerText = rowLabels[label-1];
+            c.setAttribute('align','center');
+        }
+        for (label of range(1,rows+1)) {
+            c = t[label+rows].insertCell(0);
+            c.innerText = rowLabels[label-1];
+            c.setAttribute('align','center');
+        }
+        // Top Row Headers
+        row = table.insertRow(0);
+        cell = row.insertCell(0);
+        cell.innerText = 'Isle';
+        cell.setAttribute('align','center');
+        for (j of range(1,cols+1)) {
+            addCell(row,100+j)
+        }
+    } else {
+        // Table Body
+        for (i of range(1,rows+1)) {
+            let row = table.insertRow(0);
+            t[i] = row;
+            for (j of range(1,cols+1)) {
+                addCell(row,`${i},${j}`);
+            }
+        }
+        // First Column Labels
+        for (label of range(1,rows+1)) {
+            c = t[label].insertCell(0);
+            c.innerText = rowLabels[label-1];
+            c.setAttribute('align','center');
+        }
+        // Top Row Headers
+        let row = table.insertRow(0);
+        let cell = row.insertCell(0);
+        cell.innerText = 'Isle';
+        cell.setAttribute('align','center');
+        for (j of range(1,cols+1)) {
+            addrow(row,100+j);
+        }
     }
 }
 
