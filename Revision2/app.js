@@ -70,31 +70,40 @@ let validation = {
         binCount: false
     }
 };
+let pattern = [];
 let shelfs = [
     {
-        "Default Isle Pair": {
-            groundup_labels: ['A','B','C','D','E'],
+        "Default Pair": {
+            labels: ['E', 'D', 'C', 'B', 'A', 'A', 'B', 'C', 'D', 'E'],
             batch_size: 8,
-            pattern: "gridlist",
-            pair:0
+            pattern: ["5-0", "5-2", "4-2", "4-0", "3-0", "3-2", "6-2", "6-0",
+                "7-0", "7-1", "7-2", "7-3", "2-3", "2-2", "2-1", "2-0", "1-0",
+                "1-1", "1-2", "1-3", "8-3", "8-2", "8-1", "8-0", "9-0", "9-2",
+                "0-2", "0-0", "0-4", "0-6", "9-6", "9-4", "8-4", "8-5", "8-6",
+                "8-7", "1-7", "1-6", "1-5", "1-4", "2-4", "2-5", "2-6", "2-7",
+                "7-7", "7-6", "7-5", "7-4", "6-4", "6-6", "3-6", "3-4", "4-4",
+                "4-6", "5-6", "5-4"],
+            pair: true
         }
     },
     {
-        "Default Signle Isle": {
-            groundup_labels: ['A','B','C','D','E'],
+        "Default Unpaired": {
+            labels: ['A', 'B', 'C', 'D', 'E'],
             batch_size: 8,
             pattern: "gridlist",
-            pair:1
+            pair: false
         }
     }
 ];
+
+
 
 function loadpaths() {
     let pickPathfile = document.getElementById('pickPathfile');
     let reader = new FileReader();
     let file = pickPathfile.files[0];
     if (file == undefined) return;
-    reader.onload = ()=>{
+    reader.onload = () => {
         data = JSON.parse(reader.result);
         renderFloor();
         enableDownload();
@@ -108,16 +117,16 @@ function download() {
     const csvContent = "still gotta make";
     switch (option) {
         case 'f':
-            a.setAttribute('href','data:text/plain;charset=utf-8, '+encodeURIComponent(csvContent));
-            a.setAttribute('download',`Floor.csv`);
+            a.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(csvContent));
+            a.setAttribute('download', `Floor.csv`);
             break;
         case 's':
-            a.setAttribute('href','data:text/plain;charset=utf-8, '+encodeURIComponent(csvContent));
-            a.setAttribute('download',`Section.csv`);
+            a.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(csvContent));
+            a.setAttribute('download', `Section.csv`);
             break;
         case 'p':
-            a.setAttribute('href',"data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)));
-            a.setAttribute('download',`PickPath.json`);
+            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)));
+            a.setAttribute('download', `PickPath.json`);
             break;
         default:
             console.log('should never see this');
@@ -136,7 +145,7 @@ function disableDownload() {
     downloadSelect.disabled = true;
 }
 
-function updateDirection(isle,bin) {
+function updateDirection(isle, bin) {
     const id = genIsleBinID(isle, bin);
     let arrow = document.getElementById(`${id}DIR`);
     let newdir = arrow.getAttribute("dir") !== 'true';
@@ -146,10 +155,10 @@ function updateDirection(isle,bin) {
         let modsDir = data[floor][sectionIndex]['mods']['direction'];
         modsDir[id] = newdir;
     }
-    renderLayoutDirection(id,newdir);
+    renderLayoutDirection(id, newdir);
 }
 
-function renderLayoutDirection(id,newdir) {
+function renderLayoutDirection(id, newdir) {
     let arrow = document.getElementById(`${id}DIR`);
     arrow.innerHTML = newdir ? svg_l : svg_r;
     arrow.setAttribute("dir", newdir);
@@ -160,7 +169,7 @@ function renderLayoutDirections() {
     const sectionIndex = sectionLayout.getAttribute('sectionIndex');
     let modsDir = data[floor][sectionIndex]['mods']['direction'];
     for (id in modsDir) {
-        renderLayoutDirection(id,modsDir[id]);
+        renderLayoutDirection(id, modsDir[id]);
     }
 }
 
@@ -205,7 +214,7 @@ function renderFloorItem(floor) {
 
 function setShelfModalReturn(r) {
     let shelfReturn = document.getElementById("shelfModalReturn");
-    switch(r) {
+    switch (r) {
         case 'sectionModal':
             const floor = document.getElementById('emfloor').innerText;
             shelfReturn.innerHTML = `<button class="btn btn-secondary" data-bs-target="#sectionModal" data-bs-toggle="modal" floor="${floor}">Back</button>`;
@@ -298,7 +307,7 @@ function removePick(event) {
     }
     removes.reverse()
     for (index of removes) {
-        pickPath.splice(index,1);
+        pickPath.splice(index, 1);
     }
     renderPickPath();
 }
@@ -428,7 +437,7 @@ function renderLayout(event) {
     const layout = data[floor][section];
     const start = layout.isleStart;
     const end = layout.isleEnd;
-    const step = layout.islePair?2:1;
+    const step = layout.islePair ? 2 : 1;
     let direction = layout.direction;
     sectionLayout.innerHTML = '';
     for (let i = start; i < end; i += step) {
@@ -526,14 +535,14 @@ function renderLayoutPickPath() {
 //     renderSection(floor);
 // }
 
-function moveSelected(event,moveDir,render,whichSelect) {
+function moveSelected(event, moveDir, render, whichSelect) {
     let floor = document.getElementsByClassName('accordion-button');
     for (item of floor) {
-        if (item.getAttribute('aria-expanded')==='true') {
+        if (item.getAttribute('aria-expanded') === 'true') {
             floor = item.getAttribute('aria-controls');
         }
     }
-    floor = floor.slice(0,floor.length-17);
+    floor = floor.slice(0, floor.length - 17);
     let indices = [];
     for (option of event.selectedOptions) {
         indices.push(parseInt(option.getAttribute('sectionIndex')));
@@ -553,9 +562,9 @@ function moveSelected(event,moveDir,render,whichSelect) {
     for (index of indices) {
         if ((index == -1) ||
             (index == 0 && moveDir == moveU) ||
-            (index == data[floor].length-1 && moveDir == moveD)) continue;
-        temp = select[index+moveDir];
-        select[index+moveDir] = select[index];
+            (index == data[floor].length - 1 && moveDir == moveD)) continue;
+        temp = select[index + moveDir];
+        select[index + moveDir] = select[index];
         select[index] = temp;
     }
     render(floor);
@@ -568,77 +577,83 @@ function copy(obj) {
 
 let t = {};
 function renderTableEdit() {
-    function addCell(row,text) {
+    function addCell(row, text, i, j) {
         let col = row.insertCell();
         col.innerText = text;
-        col.setAttribute('align','center');
+        col.setAttribute('align', 'center');
+        if (i == undefined || j == undefined) return;
+        col.innerText = '';
+        col.setAttribute('row', i);
+        col.setAttribute('col', j);
+        col.setAttribute('id', `${i}-${j}`);
+        col.onclick = function () { togglePattern(i, j); };
     }
 
     let table = document.getElementById('shelfPatternEdit');
     const rows = parseInt(document.getElementById('rows').value);
     const cols = parseInt(document.getElementById('cols').value);
     const pair = document.getElementById('patternIslePair').checked;
-    const rowLabels = ['A','B','C','D','E'];
+    const rowLabels = ['A', 'B', 'C', 'D', 'E'];
     table.innerHTML = '';
+    pattern = [];
     if (pair) {
         // Table Body
-        for (i of range(1,rows+1)) {
+        for (i of range(1, rows + 1)) {
             let row = table.insertRow();
             t[i] = row;
-            for (j of range(1,cols+1)) {
-                addCell(row,`${i},${j}`);
-            }
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, rows - i, j - 1); }
         }
         table.insertRow(0).insertCell();
-        for (i of range(1,rows+1)) {
+        for (i of range(1, rows + 1)) {
             let row = table.insertRow(0);
-            t[i+rows] = row;
-            for (j of range(1,cols+1)) {
-                addCell(row,`${i},${j}`);
-            }
+            t[i + rows] = row;
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, rows + i - 1, j - 1); }
         }
         // First Column Labels
-        for (label of range(1,rows+1)) {
+        for (label of range(1, rows + 1)) {
             c = t[label].insertCell(0);
-            c.innerText = rowLabels[label-1];
-            c.setAttribute('align','center');
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
         }
-        for (label of range(1,rows+1)) {
-            c = t[label+rows].insertCell(0);
-            c.innerText = rowLabels[label-1];
-            c.setAttribute('align','center');
-        }
-        // Top Row Headers
-        row = table.insertRow(0);
-        cell = row.insertCell(0);
-        cell.innerText = 'Isle';
-        cell.setAttribute('align','center');
-        for (j of range(1,cols+1)) {
-            addCell(row,100+j)
-        }
-    } else {
-        // Table Body
-        for (i of range(1,rows+1)) {
-            let row = table.insertRow(0);
-            t[i] = row;
-            for (j of range(1,cols+1)) {
-                addCell(row,`${i},${j}`);
-            }
-        }
-        // First Column Labels
-        for (label of range(1,rows+1)) {
-            c = t[label].insertCell(0);
-            c.innerText = rowLabels[label-1];
-            c.setAttribute('align','center');
+        for (label of range(1, rows + 1)) {
+            c = t[label + rows].insertCell(0);
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
         }
         // Top Row Headers
         let row = table.insertRow(0);
         let cell = row.insertCell(0);
         cell.innerText = 'Isle';
-        cell.setAttribute('align','center');
-        for (j of range(1,cols+1)) {
-            addrow(row,100+j);
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) {
+            addCell(row, 100 + j)
         }
+        row = table.insertRow(t.length);
+        cell = row.insertCell(0);
+        cell.innerText = 'Isle';
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) {
+            addCell(row, 100 + j)
+        }
+    } else {
+        // Table Body
+        for (i of range(1, rows + 1)) {
+            let row = table.insertRow(0);
+            t[i] = row;
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, i, j); }
+        }
+        // First Column Labels
+        for (label of range(1, rows + 1)) {
+            c = t[label].insertCell(0);
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
+        }
+        // Top Row Headers
+        let row = table.insertRow(0);
+        let cell = row.insertCell(0);
+        cell.innerText = 'Isle';
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) { addCell(row, 100 + j); }
     }
 }
 
@@ -649,3 +664,18 @@ const range = (start, end) => {
 }
 
 renderTableEdit();
+
+function togglePattern(row, col) {
+    let id = `${row}-${col}`;
+    if (pattern.includes(id)) {
+        pattern.splice(pattern.indexOf(id), 1);
+        document.getElementById(id).innerText = "";
+        for (element in pattern) {
+            id = pattern[element];
+            document.getElementById(id).innerText = parseInt(element) + 1;
+        }
+    } else {
+        pattern.push(id);
+        document.getElementById(id).innerText = pattern.length;
+    }
+}
