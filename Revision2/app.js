@@ -74,7 +74,7 @@ let pattern = [];
 let shelfs = [
     {
         name:"Default Pair",
-        labels: ['A', 'B', 'C', 'D', 'E'],
+        labels: ['E', 'D', 'C', 'B', 'A', 'A', 'B', 'C', 'D', 'E'],
         batch_size: 8,
         pattern: ["5-0", "5-2", "4-2", "4-0", "3-0", "3-2", "6-2", "6-0",
             "7-0", "7-1", "7-2", "7-3", "2-3", "2-2", "2-1", "2-0", "1-0",
@@ -235,6 +235,7 @@ function addSection() {
     const binOffsetV = parseInt(binOffset.value);
     const binSegmentV = parseInt(binSegment.value);
     const binCountV = parseInt(binCount.value);
+    const shelfV = parseInt(document.getElementById('shelfPatternSelect').value);
 
     data[floor].push({
         isleStart: isleStartV,
@@ -245,6 +246,7 @@ function addSection() {
         binOffset: binOffsetV,
         binSegment: binSegmentV,
         binCount: binCountV,
+        shelf:shelfV,
         pickPath: [],
         mods: {
             direction: {},
@@ -535,13 +537,7 @@ function renderLayoutPickPath() {
 // }
 
 function moveSelected(event, moveDir, render, whichSelect) {
-    let floor = document.getElementsByClassName('accordion-button');
-    for (item of floor) {
-        if (item.getAttribute('aria-expanded') === 'true') {
-            floor = item.getAttribute('aria-controls');
-        }
-    }
-    floor = floor.slice(0, floor.length - 17);
+    const floor = getFloor();
     let indices = [];
     for (option of event.selectedOptions) {
         indices.push(parseInt(option.getAttribute('sectionIndex')));
@@ -687,7 +683,7 @@ function addPattern() {
     const batch_size = parseInt(document.getElementById('cols').value);
     shelfs.push({
         name:name,
-        labels:labels,
+        labels:pair?labels.reverse()+labels:labels,
         batch_size:batch_size,
         pattern:pattern,
         pair:pair
@@ -790,3 +786,53 @@ function updateShelfPreview(value) {
 }
 
 updateShelfPreview(0);
+
+function getFloor() {
+    let floor = document.getElementsByClassName('accordion-button');
+    for (item of floor) {
+        if (item.getAttribute('aria-expanded') === 'true') {
+            floor = item.getAttribute('aria-controls');
+        }
+    }
+    return floor.slice(0, floor.length - 17);
+}
+
+function genFloor() {
+    let floor = getFloor();
+    return genSections(floor);
+}
+
+function genSections(floor) {
+    let result = [];
+    for (section of data[floor]) {
+        result += genSection(floor,section);
+    }
+    return result;
+}
+
+function genSection(floor,section) {
+    let result = [];
+    let pair = section.pair;
+    for (path of section.pickPath) {
+        let asile = parseInt(path.slice(0,path.indexOf('-')));
+        console.log(asile);
+        let binStart = parseInt(path.slice(path.indexOf('-')+1));
+        let shelf = shelfs[section.shelf];
+        result += genShelf(floor,asile,binStart,shelf,pair);
+        break;
+    }
+    return result;
+}
+
+function genShelf(floor,asile,binStart,shelf,pair) {
+    let result = [];
+    for (item of shelf.pattern) {
+        // yes this is going to be very slow, fix later
+        let row = parseInt(item.slice(0,item.indexOf('-')));
+        row = shelf.labels[row];
+        let col = parseInt(item.slice(item.indexOf('-')+1));
+        if (pair && col > shelf.labels.length / 2) { pair = 1; }
+        result.push(`${floor}${asile+pair}${row}${binStart+col}`);
+    }
+    return result;
+}
