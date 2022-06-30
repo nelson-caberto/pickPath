@@ -101,7 +101,9 @@ function loadpaths() {
     let file = pickPathfile.files[0];
     if (file == undefined) return;
     reader.onload = () => {
-        data = JSON.parse(reader.result);
+        let x = JSON.parse(reader.result);
+        data = x[0];
+        shelfs = x[1];
         renderFloor();
         enableDownload();
     };
@@ -122,7 +124,7 @@ function download() {
             a.setAttribute('download', `Section.csv`);
             break;
         case 'p':
-            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data)));
+            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([data,shelf])));
             a.setAttribute('download', `PickPath.json`);
             break;
         default:
