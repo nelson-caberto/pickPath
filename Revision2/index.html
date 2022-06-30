@@ -54,7 +54,7 @@
             </div>
         </div>
     </div>
-
+    <!-- Shelf Patterns Modal -->
     <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="shelfModal" tabindex="-1"
         aria-labelledby="shelfModal" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -105,12 +105,12 @@
                 <div class="modal-footer">
                     <div id="shelfModalReturn">
                     </div>
-                    <button type="button" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-primary" onclick="addPattern();">Add</button>
                 </div>
             </div>
         </div>
     </div>
-
+    <!-- Section Modal -->
     <div class="modal fade" data-bs-backdrop="static" id="sectionModal" tabindex="-1" aria-labelledby="sectionModal"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -123,7 +123,7 @@
                     <div class="container">
                         <div class="row" onchange="validateSectionAdd();">
                             <div class="col">
-                                <h5>Isle</h5>
+                                <h5>Aisle</h5>
                                 <div class="form-floating">
                                     <input type="number" class="form-control" id="isleStart" value="101">
                                     <label for="isleStart">Start</label>

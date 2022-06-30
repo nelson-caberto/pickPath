@@ -73,30 +73,27 @@ let validation = {
 let pattern = [];
 let shelfs = [
     {
-        "Default Pair": {
-            labels: ['E', 'D', 'C', 'B', 'A', 'A', 'B', 'C', 'D', 'E'],
-            batch_size: 8,
-            pattern: ["5-0", "5-2", "4-2", "4-0", "3-0", "3-2", "6-2", "6-0",
-                "7-0", "7-1", "7-2", "7-3", "2-3", "2-2", "2-1", "2-0", "1-0",
-                "1-1", "1-2", "1-3", "8-3", "8-2", "8-1", "8-0", "9-0", "9-2",
-                "0-2", "0-0", "0-4", "0-6", "9-6", "9-4", "8-4", "8-5", "8-6",
-                "8-7", "1-7", "1-6", "1-5", "1-4", "2-4", "2-5", "2-6", "2-7",
-                "7-7", "7-6", "7-5", "7-4", "6-4", "6-6", "3-6", "3-4", "4-4",
-                "4-6", "5-6", "5-4"],
-            pair: true
-        }
+        name:"Default Pair",
+        labels: ['A', 'B', 'C', 'D', 'E'],
+        batch_size: 8,
+        pattern: ["5-0", "5-2", "4-2", "4-0", "3-0", "3-2", "6-2", "6-0",
+            "7-0", "7-1", "7-2", "7-3", "2-3", "2-2", "2-1", "2-0", "1-0",
+            "1-1", "1-2", "1-3", "8-3", "8-2", "8-1", "8-0", "9-0", "9-2",
+            "0-2", "0-0", "0-4", "0-6", "9-6", "9-4", "8-4", "8-5", "8-6",
+            "8-7", "1-7", "1-6", "1-5", "1-4", "2-4", "2-5", "2-6", "2-7",
+            "7-7", "7-6", "7-5", "7-4", "6-4", "6-6", "3-6", "3-4", "4-4",
+            "4-6", "5-6", "5-4"],
+        pair: true
     },
     {
-        "Default Unpaired": {
-            labels: ['A', 'B', 'C', 'D', 'E'],
-            batch_size: 8,
-            pattern: "gridlist",
-            pair: false
-        }
+        name:"Default Unpaired",
+        labels: ['A', 'B', 'C', 'D', 'E'],
+        batch_size: 4,
+        pattern: ["1-1","1-3","2-3","2-1","3-1","3-2","3-3",
+            "3-4","4-4","4-3","4-2","4-1","5-1","5-3"],
+        pair: false
     }
 ];
-
-
 
 function loadpaths() {
     let pickPathfile = document.getElementById('pickPathfile');
@@ -623,14 +620,14 @@ function renderTableEdit() {
         // Top Row Headers
         let row = table.insertRow(0);
         let cell = row.insertCell(0);
-        cell.innerText = 'Isle';
+        cell.innerText = 'Levels';
         cell.setAttribute('align', 'center');
         for (j of range(1, cols + 1)) {
             addCell(row, 100 + j)
         }
         row = table.insertRow(t.length);
         cell = row.insertCell(0);
-        cell.innerText = 'Isle';
+        cell.innerText = 'Levels';
         cell.setAttribute('align', 'center');
         for (j of range(1, cols + 1)) {
             addCell(row, 100 + j)
@@ -651,7 +648,7 @@ function renderTableEdit() {
         // Top Row Headers
         let row = table.insertRow(0);
         let cell = row.insertCell(0);
-        cell.innerText = 'Isle';
+        cell.innerText = 'Levels';
         cell.setAttribute('align', 'center');
         for (j of range(1, cols + 1)) { addCell(row, 100 + j); }
     }
@@ -679,3 +676,20 @@ function togglePattern(row, col) {
         document.getElementById(id).innerText = pattern.length;
     }
 }
+
+function addPattern() {
+    const name = document.getElementById('patternName').value;
+    const pair = document.getElementById('patternIslePair').checked;
+    const rows = parseInt(document.getElementById('rows').value);
+    const labels = ['A','B','C','D','E'].splice(0,rows);
+    const batch_size = parseInt(document.getElementById('cols').value);
+    shelfs.push({
+        name:name,
+        labels:labels,
+        batch_size:batch_size,
+        pattern:pattern,
+        pair:pair
+    });
+    alert(`${name} has been added`);
+}
+
