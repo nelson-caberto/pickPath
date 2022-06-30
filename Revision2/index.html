@@ -168,14 +168,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="justify-content:center;">
                     <div class="input-group mb-3">
                         <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse"
                             data-bs-target="#shelfPatternCollapse" aria-expanded="false"
                             aria-controls="shelfPatternCollapse">
                             Shelf Pattern
                         </button>
-                        <select id="shelfPatternSelect" class="form-select" aria-label="shelfPatternSelect">
+                        <select id="shelfPatternSelect" class="form-select" aria-label="shelfPatternSelect" onchange="updateShelfPreview(this.value);">
                             <option value="0" selected>Default Paired</option>
                             <option value="1">Default Unpaired</option>
                         </select>
@@ -185,8 +185,7 @@
                     </div>
                     <div class="collapse" id="shelfPatternCollapse">
                         <div class="card card-body" id="shelfPatternViewBody">
-                            Some placeholder content for the collapse component. This panel is hidden by default but
-                            revealed when the user activates the relevant trigger.
+                            <table id="shelfPreview" class="table-bordered"></table>
                         </div>
                     </div>
                 </div>

@@ -703,3 +703,88 @@ function updateShelfPatternSelect() {
     }
     option.innerHTML = options;
 }
+
+function updateShelfPreview(value) {
+    function addCell(row, text, i, j) {
+        let col = row.insertCell();
+        col.innerText = text;
+        col.setAttribute('align', 'center');
+        if (i == undefined || j == undefined) return;
+        col.innerText = '';
+        col.setAttribute('id', `p${i}-${j}`);
+    }
+
+    let table = document.getElementById('shelfPreview');
+    const shelf = shelfs[value];
+    const rows = shelf.labels.length;
+    const cols = shelf.batch_size;
+    const pair = shelf.pair;
+    const rowLabels = shelf.labels;
+    table.innerHTML = '';
+    pattern = shelf.pattern;
+
+    if (pair) {
+        // Table Body
+        for (i of range(1, rows + 1)) {
+            let row = table.insertRow();
+            t[i] = row;
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, rows - i, j - 1); }
+        }
+        table.insertRow(0).insertCell();
+        for (i of range(1, rows + 1)) {
+            let row = table.insertRow(0);
+            t[i + rows] = row;
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, rows + i - 1, j - 1); }
+        }
+        // First Column Labels
+        for (label of range(1, rows + 1)) {
+            c = t[label].insertCell(0);
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
+        }
+        for (label of range(1, rows + 1)) {
+            c = t[label + rows].insertCell(0);
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
+        }
+        // Top Row Headers
+        let row = table.insertRow(0);
+        let cell = row.insertCell(0);
+        cell.innerText = 'Levels';
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) {
+            addCell(row, 100 + j)
+        }
+        row = table.insertRow(t.length);
+        cell = row.insertCell(0);
+        cell.innerText = 'Levels';
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) {
+            addCell(row, 100 + j)
+        }
+    } else {
+        // Table Body
+        for (i of range(1, rows + 1)) {
+            let row = table.insertRow(0);
+            t[i] = row;
+            for (j of range(1, cols + 1)) { addCell(row, `${i},${j}`, i, j); }
+        }
+        // First Column Labels
+        for (label of range(1, rows + 1)) {
+            c = t[label].insertCell(0);
+            c.innerText = rowLabels[label - 1];
+            c.setAttribute('align', 'center');
+        }
+        // Top Row Headers
+        let row = table.insertRow(0);
+        let cell = row.insertCell(0);
+        cell.innerText = 'Levels';
+        cell.setAttribute('align', 'center');
+        for (j of range(1, cols + 1)) { addCell(row, 100 + j); }
+    }
+    for (id in pattern) {
+        document.getElementById(`p${pattern[id]}`).innerText = 1+parseInt(id);
+    }
+}
+
+updateShelfPreview(0);
