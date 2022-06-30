@@ -691,5 +691,15 @@ function addPattern() {
         pair:pair
     });
     alert(`${name} has been added`);
+    updateShelfPatternSelect();
 }
 
+function updateShelfPatternSelect() {
+    let option = document.getElementById('shelfPatternSelect');
+    option.innerHTML = '';
+    let options = '';
+    for (shelf in shelfs) {
+        options += `<option value="${shelf}">${shelfs[shelf].name}</option>`;
+    }
+    option.innerHTML = options;
+}
