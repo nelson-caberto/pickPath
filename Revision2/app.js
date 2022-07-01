@@ -113,9 +113,12 @@ function loadpaths() {
 function download() {
     let option = downloadSelect.selectedOptions[0].value;
     let a = document.createElement('a');
-    const csvContent = "still gotta make";
+    let csvContent = "still gotta make";
     switch (option) {
         case 'f':
+            csvContent = genFloor();
+            if (csvContent === '') return;
+            csvContent = toCSV(csvContent);
             a.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(csvContent));
             a.setAttribute('download', `Floor.csv`);
             break;
@@ -794,6 +797,7 @@ function getFloor() {
             floor = item.getAttribute('aria-controls');
         }
     }
+    if (typeof(floor) !== 'string') return '';
     return floor.slice(0, floor.length - 17);
 }
 
@@ -807,6 +811,10 @@ function toCSV(arr) {
 
 function genFloor() {
     let floor = getFloor();
+    if (floor == '') {
+        alert('Please Select a Floor');
+        return '';
+    }
     return genSections(floor);
 }
 
@@ -825,12 +833,22 @@ function genSection(floor,section) {
         let asile = parseInt(path.slice(0,path.indexOf('-')));
         let binStart = parseInt(path.slice(path.indexOf('-')+1));
         let shelf = shelfs[section.shelf];
-        result.push(...genShelf(floor,asile,binStart,shelf,pair));
+        let batch_size = shelf.batch_size;
+        let binCount = section.binCount;
+        result.push(...genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size));
     }
     return result;
 }
 
-function genShelf(floor,asile,binStart,shelf,pair) {
+function genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size) {
+    let result = [];
+    for (let i = binStart; i < binStart+binCount; i += batch_size) {
+        result.push(...genBatch(floor,asile,i,shelf,pair));
+    }
+    return result;
+}
+
+function genBatch(floor,asile,binStart,shelf,pair) {
     let result = [];
     let isle = 0;
     for (item of shelf.pattern) {
