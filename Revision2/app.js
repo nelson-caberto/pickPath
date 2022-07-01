@@ -124,7 +124,7 @@ function download() {
             a.setAttribute('download', `Section.csv`);
             break;
         case 'p':
-            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([data,shelf])));
+            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([data,shelfs])));
             a.setAttribute('download', `PickPath.json`);
             break;
         default:
@@ -797,6 +797,14 @@ function getFloor() {
     return floor.slice(0, floor.length - 17);
 }
 
+function toCSV(arr) {
+    let csvContent = '';
+    for (a of arr) {
+        csvContent += a + '\n';
+    }
+    return csvContent;
+}
+
 function genFloor() {
     let floor = getFloor();
     return genSections(floor);
@@ -805,34 +813,33 @@ function genFloor() {
 function genSections(floor) {
     let result = [];
     for (section of data[floor]) {
-        result += genSection(floor,section);
+        result.push(...genSection(floor,section));
     }
     return result;
 }
 
 function genSection(floor,section) {
     let result = [];
-    let pair = section.pair;
+    let pair = section.islePair;
     for (path of section.pickPath) {
         let asile = parseInt(path.slice(0,path.indexOf('-')));
-        console.log(asile);
         let binStart = parseInt(path.slice(path.indexOf('-')+1));
         let shelf = shelfs[section.shelf];
-        result += genShelf(floor,asile,binStart,shelf,pair);
-        break;
+        result.push(...genShelf(floor,asile,binStart,shelf,pair));
     }
     return result;
 }
 
 function genShelf(floor,asile,binStart,shelf,pair) {
     let result = [];
+    let isle = 0;
     for (item of shelf.pattern) {
         // yes this is going to be very slow, fix later
         let row = parseInt(item.slice(0,item.indexOf('-')));
+        if (pair && row >= shelf.labels.length/2) {isle=0;} else {isle=1;}
         row = shelf.labels[row];
         let col = parseInt(item.slice(item.indexOf('-')+1));
-        if (pair && col > shelf.labels.length / 2) { pair = 1; }
-        result.push(`${floor}${asile+pair}${row}${binStart+col}`);
+        result.push(`${floor}${asile+isle}${row}${binStart+col}`);
     }
     return result;
 }
