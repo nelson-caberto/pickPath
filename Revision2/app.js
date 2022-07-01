@@ -123,6 +123,13 @@ function download() {
             a.setAttribute('download', `Floor.csv`);
             break;
         case 's':
+            if (!sectionLayout.hasAttribute('sectionindex')) {
+                alert('Please Select a Section');
+                return;
+            }
+            let floor = sectionLayout.getAttribute('floor');
+            let section = parseInt(sectionLayout.getAttribute('sectionindex'));
+            csvContent = toCSV(genSection(floor,data[floor][section]));
             a.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(csvContent));
             a.setAttribute('download', `Section.csv`);
             break;
@@ -835,7 +842,8 @@ function genSection(floor,section) {
         let shelf = shelfs[section.shelf];
         let batch_size = shelf.batch_size;
         let binCount = section.binCount;
-        result.push(...genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size));
+        let direction = section.direction;
+        result.push(...genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size,direction));
     }
     return result;
 }
@@ -845,7 +853,7 @@ function genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size) {
     for (let i = binStart; i < binStart+binCount; i += batch_size) {
         result.push(...genBatch(floor,asile,i,shelf,pair));
     }
-    return result;
+    return direction?result.reverse():result;
 }
 
 function genBatch(floor,asile,binStart,shelf,pair) {
