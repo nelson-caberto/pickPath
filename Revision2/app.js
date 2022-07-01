@@ -842,13 +842,14 @@ function genSection(floor,section) {
         let shelf = shelfs[section.shelf];
         let batch_size = shelf.batch_size;
         let binCount = section.binCount;
-        let direction = section.direction;
+        let direction = section.mods.direction[path];
+        if (direction == undefined) direction = section.direction;
         result.push(...genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size,direction));
     }
     return result;
 }
 
-function genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size) {
+function genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size,direction) {
     let result = [];
     for (let i = binStart; i < binStart+binCount; i += batch_size) {
         result.push(...genBatch(floor,asile,i,shelf,pair));
