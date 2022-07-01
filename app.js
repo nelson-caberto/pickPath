@@ -148,7 +148,7 @@ function genSubSect(isleStart, binColStart, binCount, direction, floor) {
     binCols = range(binColStart,binColEnd);
     isles = [isleStart, isleEnd];
 
-    if (!direction) {
+    if (direction) {
         binCols.reverse();
     }
 
