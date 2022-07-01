@@ -724,10 +724,10 @@ function updateShelfPreview(value) {
 
     let table = document.getElementById('shelfPreview');
     const shelf = shelfs[value];
-    const rows = shelf.labels.length;
     const cols = shelf.batch_size;
     const pair = shelf.pair;
-    const rowLabels = shelf.labels;
+    const rows = pair?shelf.labels.length/2:shelf.labels.length;
+    const rowLabels = pair?shelf.labels.slice(rows):shelf.labels;
     table.innerHTML = '';
     pattern = shelf.pattern;
 
