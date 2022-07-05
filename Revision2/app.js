@@ -748,6 +748,8 @@ function updateShelfPreview(value) {
     table.innerHTML = '';
     pattern = shelf.pattern;
 
+    islePair.checked = pair;
+
     if (pair) {
         // Table Body
         for (i of range(1, rows + 1)) {
