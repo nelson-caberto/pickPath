@@ -321,6 +321,7 @@ function removePick(event) {
         pickPath.splice(index, 1);
     }
     renderPickPath();
+    renderLayout(document.getElementById(`${getFloor()}SectionBody`));
 }
 
 function resetPick() {
@@ -573,6 +574,7 @@ function moveSelected(event, moveDir, render, whichSelect) {
         select[index] = temp;
     }
     render(floor);
+    if (whichSelect == pickPathSelect) renderLayoutPickPath();
 }
 
 //for troubleshooting when needing to compare changes in same object

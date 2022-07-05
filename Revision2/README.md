@@ -13,6 +13,8 @@
 
 ## Section Options
 ![](images/4.png)
+
+## Shelf Pattern
 ![](images/5.png)
 
 ## Adding Shelf Patterns
