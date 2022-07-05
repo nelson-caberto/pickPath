@@ -73,7 +73,7 @@ let validation = {
 let pattern = [];
 let shelfs = [
     {
-        name:"Default Pair",
+        name: "Default Pair",
         labels: ['E', 'D', 'C', 'B', 'A', 'A', 'B', 'C', 'D', 'E'],
         batch_size: 8,
         pattern: ["5-0", "5-2", "4-2", "4-0", "3-0", "3-2", "6-2", "6-0",
@@ -86,11 +86,11 @@ let shelfs = [
         pair: true
     },
     {
-        name:"Default Unpaired",
+        name: "Default Unpaired",
         labels: ['A', 'B', 'C', 'D', 'E'],
         batch_size: 4,
-        pattern: ["1-1","1-3","2-3","2-1","3-1","3-2","3-3",
-            "3-4","4-4","4-3","4-2","4-1","5-1","5-3"],
+        pattern: ["1-1", "1-3", "2-3", "2-1", "3-1", "3-2", "3-3",
+            "3-4", "4-4", "4-3", "4-2", "4-1", "5-1", "5-3"],
         pair: false
     }
 ];
@@ -129,12 +129,12 @@ function download() {
             }
             let floor = sectionLayout.getAttribute('floor');
             let section = parseInt(sectionLayout.getAttribute('sectionindex'));
-            csvContent = toCSV(genSection(floor,data[floor][section]));
+            csvContent = toCSV(genSection(floor, data[floor][section]));
             a.setAttribute('href', 'data:text/plain;charset=utf-8, ' + encodeURIComponent(csvContent));
             a.setAttribute('download', `Section.csv`);
             break;
         case 'p':
-            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([data,shelfs])));
+            a.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify([data, shelfs])));
             a.setAttribute('download', `PickPath.json`);
             break;
         default:
@@ -256,7 +256,7 @@ function addSection() {
         binOffset: binOffsetV,
         binSegment: binSegmentV,
         binCount: binCountV,
-        shelf:shelfV,
+        shelf: shelfV,
         pickPath: [],
         mods: {
             direction: {},
@@ -265,6 +265,7 @@ function addSection() {
     });
 
     renderSection(floor);
+    validateSectionAdd();
 }
 
 function renderSection(floor) {
@@ -371,9 +372,23 @@ function validateFloorInput(event) {
     validate(event, event.validity.valid, 'addFloorButton', 'floorInput');
 }
 
+function alreadyIn() {
+    const x = data[getFloor()];
+    const x2 = parseInt(isleStart.value);
+    const y2 = parseInt(isleEnd.value);
+    return x.filter(x => {
+        const x1 = x.isleStart;
+        const y1 = x.isleEnd;
+        return (x2 >= x1 && x2 <= y1) ||
+            (x1 >= x2 && x1 <= y2) ||
+            (y2 >= x1 && y2 <= y1) ||
+            (x1 >= x2 && x1 <= y2);
+    }).length > 0;
+}
+
 function validateSectionAdd() {
-    validate(isleStart, isleStart.value > 0, 'sectionAddButton', 'isleStart');
-    validate(isleEnd, parseInt(isleEnd.value) > parseInt(isleStart.value), 'sectionAddButton', 'isleEnd');
+    validate(isleStart, isleStart.value > 0 && !alreadyIn(), 'sectionAddButton', 'isleStart');
+    validate(isleEnd, parseInt(isleEnd.value) > parseInt(isleStart.value) && !alreadyIn(), 'sectionAddButton', 'isleEnd');
     validate(binStart, parseInt(binStart.value) > 0, 'sectionAddButton', 'binStart');
     validate(binOffset, parseInt(binOffset.value) > parseInt(binCount.value), 'sectionAddButton', 'binOffset');
     validate(binSegment, parseInt(binSegment.value) > 0, 'sectionAddButton', 'binSegment');
@@ -691,14 +706,14 @@ function addPattern() {
     const name = document.getElementById('patternName').value;
     const pair = document.getElementById('patternIslePair').checked;
     const rows = parseInt(document.getElementById('rows').value);
-    const labels = ['A','B','C','D','E'].splice(0,rows);
+    const labels = ['A', 'B', 'C', 'D', 'E'].splice(0, rows);
     const batch_size = parseInt(document.getElementById('cols').value);
     shelfs.push({
-        name:name,
-        labels:pair?labels.reverse()+labels:labels,
-        batch_size:batch_size,
-        pattern:pattern,
-        pair:pair
+        name: name,
+        labels: pair ? labels.reverse() + labels : labels,
+        batch_size: batch_size,
+        pattern: pattern,
+        pair: pair
     });
     alert(`${name} has been added`);
     updateShelfPatternSelect();
@@ -728,8 +743,8 @@ function updateShelfPreview(value) {
     const shelf = shelfs[value];
     const cols = shelf.batch_size;
     const pair = shelf.pair;
-    const rows = pair?shelf.labels.length/2:shelf.labels.length;
-    const rowLabels = pair?shelf.labels.slice(rows):shelf.labels;
+    const rows = pair ? shelf.labels.length / 2 : shelf.labels.length;
+    const rowLabels = pair ? shelf.labels.slice(rows) : shelf.labels;
     table.innerHTML = '';
     pattern = shelf.pattern;
 
@@ -793,7 +808,7 @@ function updateShelfPreview(value) {
         for (j of range(1, cols + 1)) { addCell(row, 100 + j); }
     }
     for (id in pattern) {
-        document.getElementById(`p${pattern[id]}`).innerText = 1+parseInt(id);
+        document.getElementById(`p${pattern[id]}`).innerText = 1 + parseInt(id);
     }
 }
 
@@ -806,7 +821,7 @@ function getFloor() {
             floor = item.getAttribute('aria-controls');
         }
     }
-    if (typeof(floor) !== 'string') return '';
+    if (typeof (floor) !== 'string') return '';
     return floor.slice(0, floor.length - 17);
 }
 
@@ -830,45 +845,45 @@ function genFloor() {
 function genSections(floor) {
     let result = [];
     for (section of data[floor]) {
-        result.push(...genSection(floor,section));
+        result.push(...genSection(floor, section));
     }
     return result;
 }
 
-function genSection(floor,section) {
+function genSection(floor, section) {
     let result = [];
     let pair = section.islePair;
     for (path of section.pickPath) {
-        let asile = parseInt(path.slice(0,path.indexOf('-')));
-        let binStart = parseInt(path.slice(path.indexOf('-')+1));
+        let asile = parseInt(path.slice(0, path.indexOf('-')));
+        let binStart = parseInt(path.slice(path.indexOf('-') + 1));
         let shelf = shelfs[section.shelf];
         let batch_size = shelf.batch_size;
         let binCount = section.binCount;
         let direction = section.mods.direction[path];
         if (direction == undefined) direction = section.direction;
-        result.push(...genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size,direction));
+        result.push(...genShelf(floor, asile, binStart, binCount, shelf, pair, batch_size, direction));
     }
     return result;
 }
 
-function genShelf(floor,asile,binStart,binCount,shelf,pair,batch_size,direction) {
+function genShelf(floor, asile, binStart, binCount, shelf, pair, batch_size, direction) {
     let result = [];
-    for (let i = binStart; i < binStart+binCount; i += batch_size) {
-        result.push(...genBatch(floor,asile,i,shelf,pair));
+    for (let i = binStart; i < binStart + binCount; i += batch_size) {
+        result.push(...genBatch(floor, asile, i, shelf, pair));
     }
-    return direction?result.reverse():result;
+    return direction ? result.reverse() : result;
 }
 
-function genBatch(floor,asile,binStart,shelf,pair) {
+function genBatch(floor, asile, binStart, shelf, pair) {
     let result = [];
     let isle = 0;
     for (item of shelf.pattern) {
         // yes this is going to be very slow, fix later
-        let row = parseInt(item.slice(0,item.indexOf('-')));
-        if (pair && row >= shelf.labels.length/2) {isle=0;} else {isle=1;}
+        let row = parseInt(item.slice(0, item.indexOf('-')));
+        if (pair && row >= shelf.labels.length / 2) { isle = 0; } else { isle = 1; }
         row = shelf.labels[row];
-        let col = parseInt(item.slice(item.indexOf('-')+1));
-        result.push(`${floor}${asile+isle}${row}${binStart+col}`);
+        let col = parseInt(item.slice(item.indexOf('-') + 1));
+        result.push(`${floor}${asile + isle}${row}${binStart + col}`);
     }
     return result;
 }
