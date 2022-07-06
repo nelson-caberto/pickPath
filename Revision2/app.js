@@ -233,6 +233,7 @@ function setShelfModalReturn(r) {
         default:
             break;
     }
+    renderTableEdit();
 }
 
 function addSection() {
