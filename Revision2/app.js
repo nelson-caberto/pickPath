@@ -106,6 +106,7 @@ function loadpaths() {
         shelfs = x[1];
         renderFloor();
         enableDownload();
+        updateShelfPatternSelect();
     };
     reader.readAsText(file);
 }
@@ -711,7 +712,7 @@ function addPattern() {
     const batch_size = parseInt(document.getElementById('cols').value);
     shelfs.push({
         name: name,
-        labels: pair ? labels.reverse() + labels : labels,
+        labels: pair ? labels.reverse().concat(labels) : labels,
         batch_size: batch_size,
         pattern: pattern,
         pair: pair
