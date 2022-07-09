@@ -570,7 +570,7 @@ function moveSelected(event, moveDir, render, whichSelect) {
     for (option of event.selectedOptions) {
         indices.push(parseInt(option.getAttribute('sectionIndex')));
     }
-    indices.reverse();
+    if (moveDir == moveD) indices.reverse();
     let temp, select;
     const section = sectionLayout.getAttribute('sectionIndex');
     switch (whichSelect) {
@@ -585,7 +585,7 @@ function moveSelected(event, moveDir, render, whichSelect) {
     for (index of indices) {
         if ((index == -1) ||
             (index == 0 && moveDir == moveU) ||
-            (index == data[floor].length - 1 && moveDir == moveD)) continue;
+            (index == select.length - 1 && moveDir == moveD)) continue;
         temp = select[index + moveDir];
         select[index + moveDir] = select[index];
         select[index] = temp;
