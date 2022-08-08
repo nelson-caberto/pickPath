@@ -8,7 +8,7 @@ A friend works at a warehouse and was tasked to optimize routes for traversing t
 
 ## Description
 
-<TODO>
+Using a predefined aisle order, generate a list of the aisle's bins and concatinate them to create a single CSV file.
 
 ## Usage
   
@@ -21,5 +21,6 @@ A friend works at a warehouse and was tasked to optimize routes for traversing t
   * Bin Segment - Number of Bin Segments
   * Bin Count - Number of Bins per Segment
   * Direction - the arrows define the direction of Aisle traversal
-2. Select the Order for traversing the Aisle's/Bin's by clicking on the X to give a order number
-3. Download the CSV
+2. Generate the Layout
+3. Select the Order for traversing the Aisle's/Bin's by clicking on the X to give a order number
+4. Download the CSV
