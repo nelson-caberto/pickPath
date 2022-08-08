@@ -20,5 +20,6 @@ A friend works at a warehouse and was tasked to optimize routes for traversing t
   * Bin Offset - Number to skip to start each Bin Segment
   * Bin Segment - Number of Bin Segments
   * Bin Count - Number of Bins per Segment
-2. Select the Order for traversing the Aisle's/Bin's
+  * Direction - the arrows define the direction of Aisle traversal
+2. Select the Order for traversing the Aisle's/Bin's by clicking on the X to give a order number
 3. Download the CSV
