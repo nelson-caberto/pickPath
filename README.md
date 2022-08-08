@@ -9,3 +9,16 @@ A friend works at a warehouse and was tasked to optimize routes for traversing t
 ## Description
 
 <TODO>
+
+## Usage
+  
+1. Define
+  * Floor Name
+  * Starting Aisle Number
+  * Ending Aisle Number
+  * Bin Start - Starting Bin Number
+  * Bin Offset - Number to skip to start each Bin Segment
+  * Bin Segment - Number of Bin Segments
+  * Bin Count - Number of Bins per Segment
+2. Select the Order for traversing the Aisle's/Bin's
+3. Download the CSV
