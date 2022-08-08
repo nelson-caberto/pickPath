@@ -1,30 +1,10 @@
-# pickPath
+# pickPath Revision 2
 
 [https://nelson-caberto.github.io/pickPath/Revision2](https://nelson-caberto.github.io/pickPath/Revision2)
 
-## Initial Site
-![](images/1.png)
+## Changes
 
-## Adding Floors
-![](images/2.png)
-
-## Adding Sections
-![](images/3.png)
-
-## Section Options
-![](images/4.png)
-
-## Shelf Pattern
-![](images/5.png)
-
-## Adding Shelf Patterns
-![](images/6.png)
-![](images/7.png)
-![](images/8.png)
-
-## Adding a Pick Path
-![](images/9.png)
-![](images/10.png)
-
-## Downloading
-![](images/11.png)
+* Generalized a Floor so we can manipulate multiple floors
+* Generalized Shelf Patterns so custom patterns can be used to define Bins
+* Generalized aisles to be paired with other aisles or have an asile with only a left or right side
+* Added the ability to Save and Load work
